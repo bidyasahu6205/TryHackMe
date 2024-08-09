@@ -152,10 +152,37 @@ PING
 
 a. What command would you use to ping the bbc.co.uk website?
 sol. ping bbc.co.uk
+┌──(kali㉿kali)-[~]
+└─$ ping bbc.co.uk          
+PING bbc.co.uk (151.101.192.81) 56(84) bytes of data.
+64 bytes from 151.101.192.81 (151.101.192.81): icmp_seq=1 ttl=128 time=148 ms
+64 bytes from 151.101.192.81 (151.101.192.81): icmp_seq=2 ttl=128 time=146 ms
+64 bytes from 151.101.192.81 (151.101.192.81): icmp_seq=3 ttl=128 time=147 ms
+64 bytes from 151.101.192.81 (151.101.192.81): icmp_seq=4 ttl=128 time=149 ms
+64 bytes from 151.101.192.81 (151.101.192.81): icmp_seq=5 ttl=128 time=162 ms
+64 bytes from 151.101.192.81 (151.101.192.81): icmp_seq=6 ttl=128 time=146 ms
+64 bytes from 151.101.192.81 (151.101.192.81): icmp_seq=7 ttl=128 time=150 ms
+64 bytes from 151.101.192.81 (151.101.192.81): icmp_seq=8 ttl=128 time=145 ms
+^C
+--- bbc.co.uk ping statistics ---
+8 packets transmitted, 8 received, 0% packet loss, time 7013ms
+rtt min/avg/max/mdev = 145.272/149.085/161.890/5.082 ms
+                                                              
 
 b. Ping muirlandoracle.co.uk
 What is the IPv4 address?
 sol. 217.160.0.152
+┌──(kali㉿kali)-[~]
+└─$ ping muirlandoracle.co.uk
+PING muirlandoracle.co.uk (217.160.0.152) 56(84) bytes of data.
+64 bytes from 217-160-0-152.elastic-ssl.ui-r.com (217.160.0.152): icmp_seq=1 ttl=128 time=166 ms
+64 bytes from 217-160-0-152.elastic-ssl.ui-r.com (217.160.0.152): icmp_seq=2 ttl=128 time=164 ms
+64 bytes from 217-160-0-152.elastic-ssl.ui-r.com (217.160.0.152): icmp_seq=3 ttl=128 time=171 ms
+64 bytes from 217-160-0-152.elastic-ssl.ui-r.com (217.160.0.152): icmp_seq=4 ttl=128 time=167 ms
+^C
+--- muirlandoracle.co.uk ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3001ms
+rtt min/avg/max/mdev = 164.159/167.280/170.998/2.461 ms
 
 c.What switch lets you change the interval of sent ping requests?
 sol. -i
@@ -167,3 +194,20 @@ e. What switch would give you a more verbose output?
 sol. -v
 
 TASK 6
+Traceroute
+- Traceroute can be used to map the path your request takes as it heads to the target machine.
+-  syntax: traceroute <destination>
+-  Windows traceroute utility (tracert) operates using the  ICMP protocol.
+
+a. What switch would you use to specify an interface when using Traceroute?
+sol. -i
+
+b. What switch would you use if you wanted to use TCP SYN requests when tracing the route?
+sol. -T
+
+c. [Lateral Thinking] Which layer of the TCP/IP model will traceroute run on by default (Windows)?
+sol. Internet
+
+TASK 7
+Whois
+- 
