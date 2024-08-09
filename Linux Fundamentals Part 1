@@ -1,0 +1,98 @@
+TASK 1
+It was a simple introduction to linux and a welcome to the room.
+
+TASK 2
+It discussed about the Linux and the reason behind why there are alot of variation available in the market.
+The reason why there there are many different variants of linux is because it is open-source which mean anyone can access and modify it. 
+a. What year was the first release of a Linux operating system?
+sol. 1991
+
+TASK 3
+This was about deploying the terminal available and interact with the linux terminal.
+just click on the start machine button and it will open the machine.
+
+TASK 4
+this is where we learn and apply few bash commands such as echo and whoami.
+Command                                    	Description
+echo                            	Output any text that we provide
+whoami	                          Find out what user we're currently logged in as!
+
+a. If we wanted to output the text "TryHackMe", what would our command be?
+sol. echo TryHackMe
+tryhackme@linux1:~$ echo TryHackMe
+TryHackMe
+
+b. What is the username of who you're logged in as on your deployed Linux machine?
+sol. tryhackme
+to get the answer the command shoud be  " whoami "
+tryhackme@linux1:~$ whoami
+tryhackme
+
+TASK 5
+This task introduces some basic commands to interact with the filesystem 
+Command            	Full Name                       syntax
+ls	                listing                          ls
+cd	                change directory                 cd path_to_the_file
+cat	                concatenate                      cat file_name
+pwd	                print working directory          pwd
+
+a. On the Linux machine that you deploy, how many folders are there?
+sol. 4
+command ls
+tryhackme@linux1:~$ ls
+access.log  folder2  folder4
+folder1     folder3
+
+b. Which directory contains a file? 
+sol. folder4
+command ls directory_name_or_path
+after using the command for all the directory we found the answer ie folder4
+eg ls folder4
+tryhackme@linux1:~$ ^C
+tryhackme@linux1:~$ ls folder1
+tryhackme@linux1:~$ ls folder2
+tryhackme@linux1:~$ ls folder3
+tryhackme@linux1:~$ ls folder4
+note.txt
+
+c. What is the contents of this file?
+sol. Hello World
+tryhackme@linux1:~$ cat folder4/note.txt 
+Hello World!
+
+d. Use the cd command to navigate to this file and find out the new current working directory. What is the path?
+sol. /home/tryhackme/folder4
+tryhackme@linux1:~$ cd /home/tryhackme/fol
+der4
+tryhackme@linux1:~/folder4$ 
+
+TASK 6
+this task taught find command. you can learn more about it using the man or help command.
+Command                                    	Description                                    Syntax
+find                            	find and prints the path of a file                       find -name file_name
+man                               provides the manual of the tool mentioned                man tool_name
+grep                              search for specific patterns within files or input.      grep specific_pattern
+wc                                counts the number of words in a file                     wc file_name
+
+a. Use grep on "access.log" to find the flag that has a prefix of "THM". What is the flag?
+sol. THM{ACCESS}
+tryhackme@linux1:~$ grep "THM" access.log
+THM{ACCESS}
+tryhackme@linux1:~$
+
+TASK 7
+It introduce us to the shell operators
+Symbol / Operator          	Description
+&	                          This operator allows you to run commands in the background of your terminal.
+&&	                        This operator allows you to combine multiple commands together in one line of your terminal.
+>	                          This operator is a redirector - meaning that we can take the output from a command (such as using cat to output a file) and direct it elsewhere.
+>>	                        This operator does the same function of the > operator but appends the output rather than replacing (meaning nothing is overwritten).
+
+a. If we wanted to run a command in the background, what operator would we want to use?
+sol. &
+
+b. If I wanted to replace the contents of a file named "passwords" with the word "password123", what would my command be?
+sol. echo password123 > passwords
+
+c.  Now if I wanted to add "tryhackme" to this file named "passwords" but also keep "passwords123", what would my command be
+sol. echo tryhackme >> passwords
