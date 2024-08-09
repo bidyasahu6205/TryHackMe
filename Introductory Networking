@@ -1,0 +1,67 @@
+
+TASK 2
+Here we learn about OSI model
+- it have 7 layers. Data flows through them from top to bottom and vise-versa
+  vii. Application
+    > provides networking options to programs running on a computer.
+    > works almost exclusively with applications, providing an interface for them to use in order to transmit data. 
+  vi. Presentation
+    > presentation layer receives data from the application layer. This data tends to be in a format that the application understands, but it's not necessarily in a standardised format that could be understood by the application layer in the receiving computer. 
+    > It translates the data into a standardised format, as well as handling any encryption, compression or other transformations to the data.
+  v. Session
+    > It receives the correctly formatted data from the presentation layer, it looks to see if it can set up a connection with the other computer across the network.
+    >  If it can't then it sends back an error and the process goes no further. 
+    > If a session can be established then it's the job of the session layer to maintain it, as well as co-operate with the session layer of the remote computer in order to synchronise communications. 
+  iv. Transport
+    >  choose the protocol over which the data is to be transmitted. The two most common protocols in the transport layer are TCP (Transmission Control Protocol) and UDP (User Datagram Protocol).
+    > TCP - connection-oriented,safe,slow,ordered delivery.
+    > UDP - connection-less,not safe,fast,not ordered delivery.
+    > With a protocol selected, the transport layer then divides the transmission up into bite-sized pieces (over TCP these are called segments, over UDP they're called datagrams),making it easier to transmit.
+  iii. Network
+    > responsible for locating the destination of your request.
+    > At this stage we're working with what is referred to as Logical addressing (i.e. IP addresses) 
+  ii. Data Link
+    > focuses on the physical addressing of the transmission.
+    > It receives a packet from the network layer (that includes the IP address for the remote computer) and adds in the physical (MAC) address of the receiving endpoint. 
+    > Inside every network enabled computer is a Network Interface Card (NIC) which comes with a unique MAC (Media Access Control) address to identify it.Set by manufacturer, can't be changed.
+    > When information is sent across a network, it's actually the physical address that is used to identify where exactly to send the information.
+    >  it's also the job of the data link layer to present the data in a format suitable for transmission.
+    > also serves an important function when it receives data, as it checks the received information to make sure that it hasn't been corrupted during transmission, which could well happen when the data is transmitted by layer 1: the physical layer.
+  i. Physical
+    > It is right down to the hardware of the computer. 
+    > This is where the electrical pulses that make up data transfer over a network are sent and received.
+    > It's the job of the physical layer to convert the binary data of the transmission into signals and transmit them across the network, as well as receiving incoming signals and converting them back into binary data.
+
+a.Which layer would choose to send data over TCP or UDP?
+sol. 4
+
+b. Which layer checks received information to make sure that it hasn't been corrupted?
+sol. 2
+
+c. In which layer would data be formatted in preparation for transmission?
+sol. 2
+
+d. Which layer transmits and receives data?
+sol. 1
+
+e. Which layer encrypts, compresses, or otherwise transforms the initial data to give it a standardised format?
+sol. 6
+
+f. Which layer tracks communications between the host and receiving computers?
+sol. 5
+
+g. Which layer accepts communication requests from applications?
+sol. 7
+
+h. Which layer handles logical addressing?
+sol. 3
+
+i. When sending data over TCP, what would you call the "bite-sized" pieces of data?
+sol. Segments
+
+j. [Research] Which layer would the FTP protocol communicate with?
+sol. 7
+
+k. Which transport layer protocol would be best suited to transmit a live video?
+sol. UDP
+
