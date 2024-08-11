@@ -19,3 +19,6 @@ sol. Half-Open, Stealth
 
 b. Can Nmap use a SYN scan without Sudo permissions (Y/N)?
 sol. N
+
+TASK 7
+UDP Scans
