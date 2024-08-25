@@ -75,4 +75,70 @@ drwxr-xr-x 2 kali kali 4096 Aug 25 05:10 folder1
   -> and d means it's a folder
 - after the first place next 3 place shows the permission given to the user next 3 shows permission for group and next 3 for others.
 
--User - 
+- In linux, permission can be granular, that whilst a users technically owns a file,if the permissions have been set, then a group of users can also have either the same or different sets of permission to the exact same file without effecting the file owner itself.
+- We can switch between users using "su" command.
+- Syntax 
+          su user_name
+          su -l user_name
+
+- Without -l (su [username]):
+    -> The environment remains mostly unchanged except for the user ID.
+    -> The current directory remains the same.
+    -> Login scripts are not sourced.
+- With -l (su -l [username] or su - [username]):
+    -> The environment is reset to that of the target user.
+    -> The current directory changes to the target user's home directory.
+    -> The target user's login scripts are sourced.
+
+a. On the deployable machine, who is the owner of "important"?
+sol. user2
+command ls -la
+-rw-r--r-- 1 user2     user2     14   may 5 10:30 important
+-rw-r--r-- 1 tryhackme tryhackme 16   may 5 10:47 myfile
+drw-r-xr-x 2 tryhackme tryhackme 4096 may 4 17:23 myfolder
+
+b. What would the command be to switch to the user "user2"
+sol. su user2
+
+c. Now switch to this user "user2" using the password "user2"
+tryhackme@linux2:~$ su user2
+Password:
+user2@linux2:/home/tryhackme$
+
+d.Output the contents of "important", what is the flag?
+sol. THM{SU_USER2}
+user2@linux2:/home/tryhackme$ cat imposrtant
+THM{SU_USER2}
+user2@linux2:/home/tryhackme$
+
+TASK 6
+Common Directories
+/etc
+- etc - etcetra
+- commonplace location to store system files that are used by your OS.
+- sudoers file- list of users and groups having permission to run sudo.
+- passwd and shadow file - stores passwords for each user in encrypted formatting called sha512.
+
+/var
+- var - variable data
+- stors data that is frequently accessed or written by services or applications running on the system.
+- log file from running services and applications are written here /var/log 
+
+/root
+- it is actually the home for the "root" sysytem user.
+
+/tmp
+- tmp - temporary
+- It is volatile and is used to store data that is only needed to be accessed once or twice.
+- Once the computer is restarted, the contents of this file are cleared out.
+- Any user can write to this file by default.
+- Benefit for pentesting, once we have access to a machine, it serves as a good place to store things like our enumerating scripts.
+
+a. What is the directory path that would we expect logs to be stored in?
+sol. /var/log
+
+b. What root directory is similar to how RAM on a computer works?
+sol. /tmp
+
+c. Name the home directory of the root user
+sol. /root
