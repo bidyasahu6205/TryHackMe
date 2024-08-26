@@ -1,0 +1,67 @@
+TASK 2
+After deploying the machine use your attack box we are supposed to login into the machine using ssh.
+syntax: ssh username@host_name/ipaddress (or) ssh -p port_number username@host_name/ipaddress
+sol. ssh tryhackme@10.10.231.247
+fingerprinting? yes
+Password: tryhackme
+tryhackme@linux3:~$ 
+
+TASK 3
+Terminal text editors
+Nano 
+- syntax: nano file_name
+- if the file doesn't exists it will create one
+- features
+  -> ctrl O - save the file then it will ask if that is the file where you wanna save press enter
+  -> ctrl x - exit
+  -> ctrl k - cut
+  -> ctrl u - paste
+- there is mmore to it's features you can see at the bottom of the text editor once you open it.
+
+Vim
+- You can modify the keybord shortcuts to be of your choosing.
+- vim works on all terminals where nano may not be installed
+
+a. Edit "task3" located in tryhackme"'s home directory using nano. What is the flag?
+sol.THM{TEXT_EDITORS}
+nano task3
+THM{TEXT_EDITORS}
+
+TASK 4
+Here we learn about some deneral/useful utilities
+i. wget 
+- downloads file from web via HTTP 
+- we simply need to provide the address of the resource we wish to download.
+- syntax: wget address_of_resourse
+ii. scp (secure copy)
+- A means of securely copying files.Unlike the regular cp command, this allows you to transfer files between two computers using ssh protocol to provide both authentication and encrption
+- we can copy files annd directories from  my computer to remote system and the other way around.
+- provided we know the user name and password for a user in current system and a user in remote system.
+- syntax to copy file from our system to remote system:
+      scp file_/_folder_name username@target_address:path/to/the/directory/where/you/want/save/it/name_of_file_or_folder_to_save_as
+  eg. scp imp.txt ubuntu@192.168.1.30:/home/ubuntu/transferred.txt
+- syntax to transfer file from remote system to our system:
+      scp username@target_address:path/to/the/file_or_folder_we_want  file/folder_name_to_save_it_as
+  eg. scp ubuntu@192.168.1.30:/home/ubuntu/doc.txt note.txt
+iii. Serving file from your host
+- ubuntu comes with pre-packaged with python3 that provides a lightweight and easy-to use module called HTTPServer.
+- this module turns your computer into a quick and easy webserver that you can use to serve your own file, where they can be downloaded by another computing using curl or wget command.
+- syntax: python -m http.server
+- alternatives: updog
+
+a. Now use python 3's "HTTPServer" module to start a web server in the home directory of "tryhackme" user on the deployed instance
+sol. python -m http.server
+
+b. Download the file http://10.10.231.247:8000/.flag.txt onto the tryhackme attackbox
+sol. 
+root@ip-10.10.105.8:~# wget http://10.10.231.247:8000/.flag.txt
+root@ip-10.10.105.8:~# ls -a
+Desktop Instructions Postman Thinclient_drives
+Downloads Pictures Scripts Tools .flag.txt ......
+root@ip-10.10.105.8:~# cat .flag.txt
+THM{WGET_WEBSERVER}
+
+TASK 5
+- Processes are the programs that are running on your machine.
+- They are managed by the kerne, and have a identifying id called al PID. PID is given according to the order in which the program is started i.e the progrm that started first will have PID value of 1.
+- 
