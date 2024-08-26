@@ -64,4 +64,14 @@ THM{WGET_WEBSERVER}
 TASK 5
 - Processes are the programs that are running on your machine.
 - They are managed by the kernel, and have a identifying id called al PID. PID is given according to the order in which the program is started i.e the progrm that started first will have PID value of 1.
-- we can use ps command to get the list of program running as our user's session and some additional info such as it's status code, the session that is running it, how much usage time of the CPU it is using, and the name of the actual program or command that is being executed
+- we can use " ps " command to get the list of program running as our user's session and some additional info such as it's status code, the session that is running it, how much usage time of the CPU it is using, and the name of the actual program or command that is being executed
+- to see processes run by other users and system processes we add aux to ps command
+    syntax: ps aux
+- " top " command can be used to get the real time statistics about the process running on your system.
+- These statistics will refresh every 10 sec, but will refresh when you use arrow key to browse the various rows.
+- we can use kill command to terminate a process
+  syntax: kill PID_number
+- Signals that we can send to a process when it is killed:
+  -> SIGTERM - kill the process, but allow it to do some cleanup tasks beforehand
+  -> SIGKILL - kill the process and don't allow it to do any cleanup tasks  
+  -> SIGSTOP - stop/suspend a process
