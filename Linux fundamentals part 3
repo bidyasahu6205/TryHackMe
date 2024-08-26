@@ -63,5 +63,5 @@ THM{WGET_WEBSERVER}
 
 TASK 5
 - Processes are the programs that are running on your machine.
-- They are managed by the kerne, and have a identifying id called al PID. PID is given according to the order in which the program is started i.e the progrm that started first will have PID value of 1.
-- 
+- They are managed by the kernel, and have a identifying id called al PID. PID is given according to the order in which the program is started i.e the progrm that started first will have PID value of 1.
+- we can use ps command to get the list of program running as our user's session and some additional info such as it's status code, the session that is running it, how much usage time of the CPU it is using, and the name of the actual program or command that is being executed
