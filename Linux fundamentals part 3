@@ -75,3 +75,10 @@ TASK 5
   -> SIGTERM - kill the process, but allow it to do some cleanup tasks beforehand
   -> SIGKILL - kill the process and don't allow it to do any cleanup tasks  
   -> SIGSTOP - stop/suspend a process
+How do process start
+- OS uses namespaces to ultimately split up the resources available on the computer to  processes.
+- Namespace are a way of isolating a process from another-only those in the same namespace will be able to see each other.
+- The process with ID of 0 is a process that is started when the system boots. This process is the system's init on Ubuntu, such as systems, which is used to provide a way of managing a user's processes and sits in between the OS and the user.
+- eg. Once a system boots and it initialises,systemd is one of the first processes that are started. Any program or piece of software that we want to start will start as what's known as a child process of systemd.This means that it is controlled by systemd, but will run as its own process to make it easier for us to identify and the likes.
+Getting Processes/services to start on boot
+- Some applications can be started on the boot of the system that we own.
