@@ -1,0 +1,6 @@
+TASK 2
+SMB
+- Server Message block Protocol
+- Client-server communication protocol used for sharing access to files, printers,serial ports and other resources on a network.
+- The SMB protocol is known as a response-request protocol, meaning that it transmits multiple messages between the client and server to establish a connection. 
+- 
