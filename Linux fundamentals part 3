@@ -64,21 +64,81 @@ THM{WGET_WEBSERVER}
 TASK 5
 - Processes are the programs that are running on your machine.
 - They are managed by the kernel, and have a identifying id called al PID. PID is given according to the order in which the program is started i.e the progrm that started first will have PID value of 1.
-- we can use " ps " command to get the list of program running as our user's session and some additional info such as it's status code, the session that is running it, how much usage time of the CPU it is using, and the name of the actual program or command that is being executed
+
+
+command              use                                                                                                               syntax
+  ps              get the list of program running as our user's session and some additional info such as it's status code,               ps
+                  the session that is running it, how much usage time of the CPU it is using,
+                  and the name of the actual program or command that is being executed
+  top                 get the real time statistics about the process running on your system.                                             kill PID_number
+  kill                command to terminate a process
+
 - to see processes run by other users and system processes we add aux to ps command
     syntax: ps aux
-- " top " command can be used to get the real time statistics about the process running on your system.
 - These statistics will refresh every 10 sec, but will refresh when you use arrow key to browse the various rows.
-- we can use kill command to terminate a process
-  syntax: kill PID_number
 - Signals that we can send to a process when it is killed:
   -> SIGTERM - kill the process, but allow it to do some cleanup tasks beforehand
   -> SIGKILL - kill the process and don't allow it to do any cleanup tasks  
   -> SIGSTOP - stop/suspend a process
+
 How do process start
 - OS uses namespaces to ultimately split up the resources available on the computer to  processes.
-- Namespace are a way of isolating a process from another-only those in the same namespace will be able to see each other.
-- The process with ID of 0 is a process that is started when the system boots. This process is the system's init on Ubuntu, such as systems, which is used to provide a way of managing a user's processes and sits in between the OS and the user.
-- eg. Once a system boots and it initialises,systemd is one of the first processes that are started. Any program or piece of software that we want to start will start as what's known as a child process of systemd.This means that it is controlled by systemd, but will run as its own process to make it easier for us to identify and the likes.
+- Namespace are great fofr as they are a way of isolating a process from another. 
+- only those in the same namespace will be able to see each other.
+- The process with ID of 0 is a process that is started when the system boots.
+- For Ubuntu pid 0 is system's init, such as systems, which is used to provide a way of managing a user's processes and sits in between the OS and the user.
+- eg. Once a system boots and it initialises, systemd is one of the first processes that are started.
+      Any program or piece of software that we want to start will start as what's known as a child process of systemd.
+      This means that it is controlled by systemd, but will run as its own process to make it easier for us to identify and the likes.
+      overview
+      pid         command
+      0           system's init
+      1            systemd
+      any other process as a child process of systemd 
+
+# NOTE #
+"ps -ef --forest"   command will show the process tree, helping you visualize the relationship between processes.
+
 Getting Processes/services to start on boot
-- Some applications can be started on the boot of the system that we own.
+- Some applications can be started on the boot of the system that we own. eg. web servers, database servers or file transfer servers.
+
+  command             use                                                   syntax
+  systemctl           allows us to interact with the systemd process        systemctl [option] [service]
+
+systemctl have 4 options
+i. Start
+ii. Stop
+iii. Enable
+iv. Disable
+
+An Introduction to Backgrounding and Foregrounding 
+
+command       use
+  &           to make the command run in the background
+  fg          to make the background running command back into the terminal
+
+a. If we were to launch a process where the previous ID was “300”, what would the ID of this new process be?
+sol. 301
+
+b. If we wanted to cleanly kill a process, what signal would we send it?
+sol. SIGTERM
+
+c. Locate the process that is running on the deployed instance (MACHINE_IP). What flag is given?
+sol. THM{PROCESSES}
+
+d. What command would we use to stop the service “myservice”?
+sol. systemctl stop myservice
+
+e. What command would we use to start the same service on the boot-up of the system?
+sol. systemctl enable myservice
+
+f. What command would we use to bring a previously backgrounded process back to the foreground?
+sol. fg
+
+TASK 6
+Maintaing Your System : Automation
+- User may want some program to start as the soon the system is booted.
+- Here we learn about cron process and crontabs to interact with cron processes.
+- Crontab is one of the processes that is started during boot, responsible for facilitating and managing cron jobs.
+- Corntab is a special file with formatting that is recognised by the cron process to execute each line step-by-step.
+- 
