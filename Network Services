@@ -4,3 +4,23 @@ SMB
 - Client-server communication protocol used for sharing access to files, printers,serial ports and other resources on a network.
 - The SMB protocol is known as a response-request protocol, meaning that it transmits multiple messages between the client and server to establish a connection. 
 - 
+
+TASK 4
+Types of SMB Exploit
+- While there are vulnerabilities such as CVE-2017-7494 that can allow remote code execution by exploiting SMB, you're more likely to encounter a situation where the best way into a system is due to misconfigurations in the system.
+- we're going to be exploiting anonymous SMB share access- a common misconfiguration that can allow us to gain information that will lead to a shell.
+- Method Breakdown
+So, from our enumeration stage, we know:
+    - The SMB share location
+    - The name of an interesting SMB share
+SMBClient
+Because we're trying to access an SMB share, we need a client to access resources on servers.
+We will be using SMBClient because it's part of the default samba suite.
+We can remotely access the SMB share using the syntax:
+smbclient //[IP]/[SHARE]
+Followed by the tags:
+-U [name] : to specify the user
+-p [port] : to specify the port
+
+a. What would be the correct syntax to access an SMB share called "secret" as user "suit" on a machine with the IP 10.10.10.2 on the default port?
+sol. smbclient //10.10.10.2/secret -U suit -p 445
