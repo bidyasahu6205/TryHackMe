@@ -186,3 +186,22 @@ corntab file
 TASK 7
 Maintaing Your System : Package Management
 Introducing Packages & Software Repos
+- Repositories: A repository is a storage location where developers submit their software for users to download and install.
+- Apt Repositories: In Ubuntu, these repositories are managed through apt (Advanced Packaging Tool), the package manager that simplifies software installation and updates.
+- Developers can submit their tools or programs to official repositories.
+- After approval, the software becomes available to users through package managers like apt. There are 2 ubuntu repositories available i.e:
+    -> Official Repositories: Managed and maintained by the Ubuntu team or your OS vendor, containing reliable, verified packages.
+    -> Community Repositories: External repositories added by the community, providing additional software that is not part of the default Ubuntu repositories.
+- You can view the list of repositories that your system uses by running certain commands, like ls in directories such as /etc/apt/sources.list.d/.
+- These files act as a registry, listing available sources for downloading and updating software.
+- You can extend the functionality of your system by adding third-party or community repositories.
+- Use the add-apt-repository command to include these repositories.
+
+Managing Your Repositories (Adding and Removing)
+- we use the apt command to install software onto our Ubuntu system.
+- Let's understand how to install and delete a software using apt and  add-apt-repository commands. using the example of installing Sublime Text:
+- Using apt for Package Management:
+  -> apt is a powerful package management tool in Ubuntu, used to install, update, and remove software.
+  -> When you add a repository with apt, the system regularly checks it for updates to the software you installed.
+- Example: Adding Sublime Text Repository
+  -> Since Sublime Text is not part of the default Ubuntu repositories, you need to manually add its repository. Here’s the process:
