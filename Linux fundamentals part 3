@@ -200,8 +200,51 @@ Introducing Packages & Software Repos
 Managing Your Repositories (Adding and Removing)
 - we use the apt command to install software onto our Ubuntu system.
 - Let's understand how to install and delete a software using apt and  add-apt-repository commands. using the example of installing Sublime Text:
-- Using apt for Package Management:
-  -> apt is a powerful package management tool in Ubuntu, used to install, update, and remove software.
-  -> When you add a repository with apt, the system regularly checks it for updates to the software you installed.
-- Example: Adding Sublime Text Repository
-  -> Since Sublime Text is not part of the default Ubuntu repositories, you need to manually add its repository. Here’s the process:
+- When adding software, the integrity of what we download is guaranteed by the use of what is called GPG (Gnu Privacy Guard) keys. These keys are essentially a safety check from the developers saying, “here’s our software”. If the keys do not match up to what your system trusts and what the developers used, then the software will not be downloaded.
+- So, to start, we need to add the GPG key for the developers of Sublime Text 3. 
+    root@linux3:~/# wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+- Now that we have added this key to our trusted list, we can now add Sublime Text 3’s repository to our apt sources list. 
+- A good practice is to have a separate file for every different community/3rd party repository that we add.
+- Let’s create a file named sublime-text.list in /etc/apt/sources.list.d
+    root@linux3:~/# cd /etc/apt/sources.list.d
+    root@linux3:/etc/apt/sources.list.d# touch sublime-text.list
+    root@linux3:/etc/apt/sources.list.d# ls
+    sublime-text.list
+- now use Nano or a text editor of your choice to add & save the Sublime Text 3 repository into this newly created file:
+    root@linux3:/etc/apt/sources.list.d# nano sublime-text.list
+    sublime-text.list
+    deb https://download.sublimetext.com/ apt/stable/
+- After we have added this entry, we need to update apt to recognise this new entry — this is done using the apt update command
+- Once successfully updated, we can now proceed to install the software that we have trusted and added to apt using apt install sublime-text
+- Removing packages is as easy as reversing. This process is done by using the add-apt-repository --remove ppa:PPA_Name/ppa command or by manually deleting the file that we previously fulfilled. Once removed, we can just use apt remove [software-name-here] i.e. apt remove sublime-text
+
+TASK 8
+Maintaining Your System: Logs
+- Located in the /var/log directory, these files and folders contain logging information for applications and services running on your system.
+- The Operating System (OS) has become pretty good at automatically managing these logs in a process that is known as “rotating”.
+- some example of logs for 3 services running in ubuntu machine are : 
+  -> Apache2 web server
+  -> fail2ban service  (used to monitor attempted brute forces)
+  ->  UFW service  (which is used as a firewall)
+- These services and logs are a great way in monitoring the health of your system and protecting it.
+- Not only that, but the logs for services such as a web server contain information about every single request — allowing developers or administrators to diagnose performance issues or investigate an intruder’s activity.
+- For example, the two types of log files below that are of interest:
+    -> access log
+    -> error log
+- There are, of course, logs that store information about how the OS is running itself and actions that are performed by users, such as authentication attempts.
+
+a. Look for the apache2 logs on the deployable linux machine.
+tryhackme@linux3:~$ cd /var/log/apache2
+tryhackme@linux3:/var/log/apache2$ ls
+access.log  error.log  other_vhosts_access.log
+access.log.1  error.log.1
+tryhackme@linux3:/var/log/apache2$ 
+
+b. What is the IP address of the user who visited the site?
+sol. 10.9.232.111
+tryhackme@linux3:/var/log/apache2$ less access.log.1
+....10.9.232.111......"GET /catsanddogs.jpg.....
+
+c. What file did they access?
+sol. catsanddogs.jpg
+
