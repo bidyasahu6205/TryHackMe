@@ -24,3 +24,10 @@ Followed by the tags:
 
 a. What would be the correct syntax to access an SMB share called "secret" as user "suit" on a machine with the IP 10.10.10.2 on the default port?
 sol. smbclient //10.10.10.2/secret -U suit -p 445
+
+b. Lets see if our interesting share has been configured to allow anonymous access, I.E it doesn't require authentication to view the files. We can do this easily by:
+- using the username "Anonymous"
+- connecting to the share we found during the enumeration stage
+- and not supplying a password.
+Does the share allow anonymous access? Y/N?
+sol. 
