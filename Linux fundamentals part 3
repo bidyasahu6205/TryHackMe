@@ -142,18 +142,47 @@ Maintaing Your System : Automation
 - Crontab is one of the processes that is started during boot, responsible for facilitating and managing cron jobs.
 - Crontab is a special file with formatting that is recognised by the cron process to execute each line step-by-step.
 - Crontab requires 6 specific values:
-  i. ValueDescriptionMINWhat minute to execute 
-  ii. atHOURWhat hour to execute 
-  iii. atDOMWhat day of the month to execute 
-  iv. atMONWhat month of the year to execute 
-  v. atDOWWhat day of the week to execute 
-  vi. atCMDThe actual command that will be executed
+
+  value                           Description
+  MIN                             what minute to execute at
+  HOUR                            what minute to execute at
+  DOM                             what day of the month to execute at
+  MON                             what month of the year to execute at
+  DOW                             What day of the week to execute at
+  CMD                             the actual command that will be executed
+
 - eg We want to back up file (cmnatic's document) every 12 hour 0 minutes 
   Crontab format:
       0 *12 * * * cp -R /home/cmnatic/Documents /var/backups/
-      i. ValueDescriptionMINWhat - 0
-      ii. atHOURWhat hour - *12 ##every 12 hour
-      iii. atDOMWhat - *  ##since we want to back up every day. If we want to back up on a specific day of the month we can set it accordingly. 
-      iv. atMONWhat - *   ##since we want to back up every month. If we want to back up on a specific month of the year we can set it accordingly.
-      v. atDOWWhat day of the week to execute 
-      vi. atCMDThe actual command that will be executed
+      i. MIN - 0
+      ii. HOUR - *12 ##every 12 hour
+      iii. DOM - *  ##since we want to back up every day. If we want to back up on a specific day of the month we can set it accordingly. 
+      iv. MON - *   ##since we want to back up every month. If we want to back up on a specific month of the year we can set it accordingly.
+      v. DOW - *    ##since we want to back up every day of the week. If we want to back up on a specific day of the week we can set it accordingly.
+      vi. CMD - cp -R /home/cmnatic/Documents /var/backups/    ##The command that will be executed. 
+- eg We want to back up file (cmnatic's document) every day at 12 O'Clock. 
+  Crontab format:
+      0 12 * * * cp -R /home/cmnatic/Documents /var/backups/
+      i. MIN - 0
+      ii. HOUR - 12 ## 12 O'Clock.
+      iii. DOM - *   
+      iv. MON - *   
+      v. DOW - *    
+      vi. CMD - cp -R /home/cmnatic/Documents /var/backups/     
+- " * " is used If we do not wish to provide a value for that specific field, i.e. we don't care what month, day, or year it is executed
+## NOTE ##
+resource to know more about Crontab
+- https://crontab-generator.org/
+- https://crontab.guru/
+##########
+
+- Crontab can be edited using  " crontab -e " .
+
+a. When will the crontab on the deployed instance (MACHINE_IP) run?
+sol.  @reboot
+corntab file 
+@reboot /var/opt/processes.sh
+
+TASK 7
+Maintaing Your System : Package Management
+Introducing Packages & Software Repos
