@@ -140,5 +140,20 @@ Maintaing Your System : Automation
 - User may want some program to start as the soon the system is booted.
 - Here we learn about cron process and crontabs to interact with cron processes.
 - Crontab is one of the processes that is started during boot, responsible for facilitating and managing cron jobs.
-- Corntab is a special file with formatting that is recognised by the cron process to execute each line step-by-step.
-- 
+- Crontab is a special file with formatting that is recognised by the cron process to execute each line step-by-step.
+- Crontab requires 6 specific values:
+  i. ValueDescriptionMINWhat minute to execute 
+  ii. atHOURWhat hour to execute 
+  iii. atDOMWhat day of the month to execute 
+  iv. atMONWhat month of the year to execute 
+  v. atDOWWhat day of the week to execute 
+  vi. atCMDThe actual command that will be executed
+- eg We want to back up file (cmnatic's document) every 12 hour 0 minutes 
+  Crontab format:
+      0 *12 * * * cp -R /home/cmnatic/Documents /var/backups/
+      i. ValueDescriptionMINWhat - 0
+      ii. atHOURWhat hour - *12 
+      iii. atDOMWhat - *  ##since we want to back up every day. If we want to back up on a specific day of the month we can set it accordingly. 
+      iv. atMONWhat - *   ##since we want to back up every month. If we want to back up on a specific month of the year we can set it accordingly.
+      v. atDOWWhat day of the week to execute 
+      vi. atCMDThe actual command that will be executed
