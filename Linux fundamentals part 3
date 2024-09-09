@@ -152,7 +152,7 @@ Maintaing Your System : Automation
   Crontab format:
       0 *12 * * * cp -R /home/cmnatic/Documents /var/backups/
       i. ValueDescriptionMINWhat - 0
-      ii. atHOURWhat hour - *12 
+      ii. atHOURWhat hour - *12 ##every 12 hour
       iii. atDOMWhat - *  ##since we want to back up every day. If we want to back up on a specific day of the month we can set it accordingly. 
       iv. atMONWhat - *   ##since we want to back up every month. If we want to back up on a specific month of the year we can set it accordingly.
       v. atDOWWhat day of the week to execute 
