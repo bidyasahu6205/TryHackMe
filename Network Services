@@ -45,18 +45,12 @@ TAG            FUNCTION
 -G             get group and member list
 -a             all of the above (full basic enumeration)
 
+a. Conduct an nmap scan of your choosing, How many ports are open?
+sol. 3
 ┌──(kali㉿kali)-[~]
 └─$ sudo nmap -p- -T4 -A 10.10.133.31
 [sudo] password for kali: 
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-09-10 11:22 EDT
-Stats: 0:03:05 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
-SYN Stealth Scan Timing: About 19.79% done; ETC: 11:38 (0:12:30 remaining)
-Stats: 0:07:10 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
-SYN Stealth Scan Timing: About 43.56% done; ETC: 11:39 (0:09:16 remaining)
-Stats: 0:16:52 elapsed; 0 hosts completed (1 up), 1 undergoing Traceroute
-Traceroute Timing: About 32.26% done; ETC: 11:39 (0:00:00 remaining)
-Stats: 0:16:53 elapsed; 0 hosts completed (1 up), 1 undergoing Script Scan
-NSE Timing: About 96.69% done; ETC: 11:39 (0:00:00 remaining)
 Nmap scan report for 10.10.133.31
 Host is up (0.20s latency).
 Not shown: 65532 closed tcp ports (reset)
@@ -113,6 +107,12 @@ HOP RTT       ADDRESS
 
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 1019.96 seconds
+
+b. What ports is SMB running on?
+sol. 139/445
+
+c. Let's get started with Enum4Linux, conduct a full basic enumeration. For starters, what is the workgroup name?   
+sol. WORKGROUP
 
 ┌──(kali㉿kali)-[~]
 └─$ sudo enum4linux -a 10.10.133.31
@@ -238,8 +238,17 @@ S-1-22-1-1000 Unix User\cactus (Local User)
  ===============================( Getting printer info for 10.10.133.31 )===============================
 No printers returned.                                                                                               
 enum4linux complete on Tue Sep 10 11:46:45 2024
-TASK 4
-Types of SMB Exploit
+
+d. What comes up as the name of the machine?        
+sol. POLOSMB
+
+e. What operating system version is running?    
+sol. 6.1
+
+f. What share sticks out as something we might want to investigate?    
+sol. profiles
+
+TASK 4: Types of SMB Exploit
 - While there are vulnerabilities such as CVE-2017-7494 that can allow remote code execution by exploiting SMB, you're more likely to encounter a situation where the best way into a system is due to misconfigurations in the system.
 - we're going to be exploiting anonymous SMB share access- a common misconfiguration that can allow us to gain information that will lead to a shell.
 - Method Breakdown
@@ -264,19 +273,20 @@ b. Lets see if our interesting share has been configured to allow anonymous acce
 - and not supplying a password.
 Does the share allow anonymous access? Y/N?
 sol. y
+
 ┌──(kali㉿kali)-[~]
 └─$ smbclient //10.10.133.31/profiles -U Anonymous -p139,445                                                        Password for [WORKGROUP\Anonymous]:
 Try "help" to get a list of possible commands.
 smb: \>
 
 c. Great! Have a look around for any interesting documents that could contain valuable information. Who can we assume this profile folder belongs to? 
-sol. 
+sol. John Cactus
 
 ┌──(root㉿kali)-[/home/kali]
 └─# smbclient //10.10.59.204/profiles -U Anonymous -p139,445
 Password for [WORKGROUP\Anonymous]:
 Try "help" to get a list of possible commands.
-smb: \> ?
+smb: \> ? 
 ?              allinfo        altname        archive        backup         
 blocksize      cancel         case_sensitive cd             chmod          
 chown          close          del            deltree        dir            
@@ -294,7 +304,15 @@ scopy          stat           symlink        tar            tarmode
 timeout        translate      unlock         volume         vuid           
 wdel           logon          listconnect    showconnect    tcon           
 tdis           tid            utimes         logoff         ..             
-!              
+!           
+###############################
+After searching on the commands I tried ls and cd to explore directories.
+D - directory
+DH - hidden directory
+H - hidden file
+N - normal files
+
+###############################
 smb: \> ls
   .                                   D        0  Tue Apr 21 07:08:23 2020
   ..                                  D        0  Tue Apr 21 06:49:56 2020
@@ -353,7 +371,7 @@ smb: \> ls
 smb: \> get Working From Home Information.txt work.txt
 NT_STATUS_OBJECT_NAME_NOT_FOUND opening remote file \Working
 smb: \> quit
-                                                                                                                   
+#####################################################################################################                                                                                            
 ┌──(root㉿kali)-[/home/kali]
 └─# smbclient //10.10.59.204/profiles -U Anonymous -p139,445
 Password for [WORKGROUP\Anonymous]:
