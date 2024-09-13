@@ -1,10 +1,49 @@
-TASK 2
-SMB
+TASK 2: SMB
 - Server Message block Protocol
 - Client-server communication protocol used for sharing access to files, printers,serial ports and other resources on a network.
 - The SMB protocol is known as a response-request protocol, meaning that it transmits multiple messages between the client and server to establish a connection. 
-- 
+- Clients connect to servers using TCP/IP (actually NetBIOS over TCP/IP as specified in RFC1001 and RFC1002), NetBEUI or IPX/SPX.
+- Working
+ -> Once they have established a connection, clients can then send commands (SMBs) to the server that allow them to access shares, open files, read and write files, and generally do all the sort of things that you want to do with a file system.
+ -> Microsoft Windows operating systems since Windows 95 have included client and server SMB protocol support. 
+ -> Samba, an open source server that supports the SMB protocol, was released for Unix systems.
 
+a. What does SMB stand for?
+sol. Server Message Back
+
+b. What type of protocol is SMB? 
+sol. Response-request
+
+c. What do clients connect to servers using?    
+sol. TCP/IP
+
+d. What systems does Samba run on?
+sol. Unix
+
+TASK 3: Enumerating SMB
+- Enumeration- It's the process of gathering information on a target in order to find potential attack vectors and aid in exploitation.
+- Enumeration can be used to gather usernames, passwords, network information, hostnames, application data, services, or any other information that may be valuable to an attacker.
+# NOTE #
+- Attack vectors are the methods or pathways that malicious actors use to gain unauthorized access to a system, network, or application in order to exploit its vulnerabilities. 
+ eg. Man-in-the-middle, Social engineering, etc
+
+- Typically, there are SMB share drives on a server that can be connected to and used to view or transfer files. 
+- SMB can often be a great starting point for an attacker looking to discover sensitive information — you'd be surprised what is sometimes included on these shares.
+- The first step of enumeration is to conduct a port scan, to find out as much information as you can about the services, applications, structure and operating system of the target machine.
+
+Enum4Linux
+- Enum4linux is a tool used to enumerate SMB shares on both Windows and Linux systems
+- It is basically a wrapper around the tools in the Samba package and makes it easy to quickly extract information from the target pertaining to SMB.
+- Syntax: enum4linux [options] ip
+
+TAG            FUNCTION
+-U             get userlist
+-M             get machine list
+-N             get namelist dump (different from -U and-M)
+-S             get sharelist
+-P             get password policy information
+-G             get group and member list
+-a             all of the above (full basic enumeration)
 
 ┌──(kali㉿kali)-[~]
 └─$ sudo nmap -p- -T4 -A 10.10.133.31
