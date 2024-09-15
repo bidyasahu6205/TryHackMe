@@ -580,4 +580,21 @@ THM{smb_is_fun_eh?}
 TASK 5: Understanding Telnet 
 Telnet
 - Telnet is an application protocol which allows you, with the use of a telnet client, to connect to and execute commands on a remote machine that's hosting a telnet server.
-- 
+- The telnet client will establish a connection with the server. The client will then become a virtual terminal- allowing you to interact with the remote host.
+- Telnet sends messages in clear text and no specific security mechanisms.
+- Thus, in many applications and services, Telnet has been replaced by SSH in most implementations.
+- Syntax:
+         telnet <ip address> <port>
+
+a. What is Telnet?    
+sol. application protocol
+
+b. What has slowly replaced Telnet?    
+sol. ssh
+
+c. How would you connect to a Telnet server with the IP 10.10.10.3 on port 23?
+sol. telnet 10.10.10.3 23
+
+d. The lack of what, means that all Telnet communication is in plaintext?
+sol. encryption
+
