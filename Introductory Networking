@@ -210,4 +210,216 @@ sol. Internet
 
 TASK 7
 Whois
+- Whois essentially allows you to query who a domain name is registered to.
+- In Europe personal details are redacted; however, elsewhere you can potentially get a great deal of information from a whois search.
+- You may need to install whois before using it. On Debian based systems this can be done with sudo apt update && sudo apt-get install whois
+- Syntax :
+          whois <domain>
+
+a. Perform a whois search on facebook.com
+sol. whois facebook.com
+
+──(kali㉿kali)-[~]
+└─$ sudo whois facebook.com
+[sudo] password for kali: 
+   Domain Name: FACEBOOK.COM
+   Registry Domain ID: 2320948_DOMAIN_COM-VRSN
+   Registrar WHOIS Server: whois.registrarsafe.com
+   Registrar URL: http://www.registrarsafe.com
+   Updated Date: 2024-04-24T19:06:12Z
+   Creation Date: 1997-03-29T05:00:00Z
+   Registry Expiry Date: 2033-03-30T04:00:00Z
+   Registrar: RegistrarSafe, LLC
+   Registrar IANA ID: 3237
+   Registrar Abuse Contact Email: abusecomplaints@registrarsafe.com
+   Registrar Abuse Contact Phone: +1-650-308-7004
+   Domain Status: clientDeleteProhibited https://icann.org/epp#clientDeleteProhibited
+   Domain Status: clientTransferProhibited https://icann.org/epp#clientTransferProhibited
+   Domain Status: clientUpdateProhibited https://icann.org/epp#clientUpdateProhibited
+   Domain Status: serverDeleteProhibited https://icann.org/epp#serverDeleteProhibited
+   Domain Status: serverTransferProhibited https://icann.org/epp#serverTransferProhibited
+   Domain Status: serverUpdateProhibited https://icann.org/epp#serverUpdateProhibited
+   Name Server: A.NS.FACEBOOK.COM
+   Name Server: B.NS.FACEBOOK.COM
+   Name Server: C.NS.FACEBOOK.COM
+   Name Server: D.NS.FACEBOOK.COM
+   DNSSEC: unsigned
+   URL of the ICANN Whois Inaccuracy Complaint Form: https://www.icann.org/wicf/
+
+The Registry database contains ONLY .COM, .NET, .EDU domains and
+Registrars.
+Domain Name: FACEBOOK.COM
+Registry Domain ID: 2320948_DOMAIN_COM-VRSN
+Registrar WHOIS Server: whois.registrarsafe.com
+Registrar URL: https://www.registrarsafe.com
+Updated Date: 2024-04-24T19:06:13Z
+Creation Date: 1997-03-29T05:00:00Z                      #################### answer (c) ######################
+Registrar Registration Expiration Date: 2033-03-30T04:00:00Z
+Registrar: RegistrarSafe, LLC
+Registrar IANA ID: 3237
+Registrar Abuse Contact Email: abusecomplaints@registrarsafe.com
+Registrar Abuse Contact Phone: +1.6503087004
+Domain Status: clientDeleteProhibited https://www.icann.org/epp#clientDeleteProhibited
+Domain Status: clientTransferProhibited https://www.icann.org/epp#clientTransferProhibited
+Domain Status: clientUpdateProhibited https://www.icann.org/epp#clientUpdateProhibited
+Domain Status: serverDeleteProhibited https://www.icann.org/epp#serverDeleteProhibited
+Domain Status: serverTransferProhibited https://www.icann.org/epp#serverTransferProhibited
+Domain Status: serverUpdateProhibited https://www.icann.org/epp#serverUpdateProhibited
+Registry Registrant ID: 
+Registrant Name: Domain Admin
+Registrant Organization: Meta Platforms, Inc.
+Registrant Street: 1601 Willow Rd 
+Registrant City: Menlo Park
+Registrant State/Province: CA
+Registrant Postal Code: 94025               ##################### answer of question (b) #########################
+Registrant Country: US
+Registrant Phone: +1.6505434800
+Registrant Phone Ext:
+Registrant Fax: 
+Registrant Fax Ext:
+Registrant Email: domain@fb.com
+Registry Admin ID: 
+Admin Name: Domain Admin
+Admin Organization: Meta Platforms, Inc.
+Admin Street: 1601 Willow Rd 
+Admin City: Menlo Park
+Admin State/Province: CA
+Admin Postal Code: 94025
+Admin Country: US
+Admin Phone: +1.6505434800
+Admin Phone Ext:
+Admin Fax: 
+Admin Fax Ext:
+Admin Email: domain@fb.com
+Registry Tech ID: 
+Tech Name: Domain Admin
+Tech Organization: Meta Platforms, Inc.
+Tech Street: 1601 Willow Rd 
+Tech City: Menlo Park
+Tech State/Province: CA
+Tech Postal Code: 94025
+Tech Country: US
+Tech Phone: +1.6505434800
+Tech Phone Ext:
+Tech Fax: 
+Tech Fax Ext:
+Tech Email: domain@fb.com
+Name Server: D.NS.FACEBOOK.COM
+Name Server: A.NS.FACEBOOK.COM
+Name Server: B.NS.FACEBOOK.COM
+Name Server: C.NS.FACEBOOK.COM
+DNSSEC: unsigned
+URL of the ICANN WHOIS Data Problem Reporting System: http://wdprs.internic.net/
+>>> Last update of WHOIS database: 2024-09-15T19:14:07Z <<<
+
+b. What is the registrant postal code for facebook.com?
+sol. 94025
+
+c. When was the facebook.com domain first registered (Format: DD/MM/YYYY)?
+sol. 29/03/1997
+
+d. Perform a whois search on microsoft.com
+sol. whois microsoft.com
+                                                                                                                   
+┌──(kali㉿kali)-[~]
+└─$ sudo whois microsoft.com
+   Domain Name: MICROSOFT.COM
+   Registry Domain ID: 2724960_DOMAIN_COM-VRSN
+   Registrar WHOIS Server: whois.markmonitor.com
+   Registrar URL: http://www.markmonitor.com
+   Updated Date: 2023-08-18T16:15:54Z
+   Creation Date: 1991-05-02T04:00:00Z
+   Registry Expiry Date: 2025-05-03T04:00:00Z
+   Registrar: MarkMonitor Inc.
+   Registrar IANA ID: 292
+   Registrar Abuse Contact Email: abusecomplaints@markmonitor.com
+   Registrar Abuse Contact Phone: +1.2086851750
+   Domain Status: clientDeleteProhibited https://icann.org/epp#clientDeleteProhibited
+   Domain Status: clientTransferProhibited https://icann.org/epp#clientTransferProhibited
+   Domain Status: clientUpdateProhibited https://icann.org/epp#clientUpdateProhibited
+   Domain Status: serverDeleteProhibited https://icann.org/epp#serverDeleteProhibited
+   Domain Status: serverTransferProhibited https://icann.org/epp#serverTransferProhibited
+   Domain Status: serverUpdateProhibited https://icann.org/epp#serverUpdateProhibited
+   Name Server: NS1-39.AZURE-DNS.COM
+   Name Server: NS2-39.AZURE-DNS.NET
+   Name Server: NS3-39.AZURE-DNS.ORG
+   Name Server: NS4-39.AZURE-DNS.INFO
+   DNSSEC: unsigned
+The Registry database contains ONLY .COM, .NET, .EDU domains and
+Registrars.
+Domain Name: microsoft.com
+Registry Domain ID: 2724960_DOMAIN_COM-VRSN
+Registrar WHOIS Server: whois.markmonitor.com
+Registrar URL: http://www.markmonitor.com
+Updated Date: 2023-08-18T16:15:54+0000
+Creation Date: 1991-05-02T04:00:00+0000
+Registrar Registration Expiration Date: 2025-05-03T00:00:00+0000
+Registrar: MarkMonitor, Inc.
+Registrar IANA ID: 292
+Registrar Abuse Contact Email: abusecomplaints@markmonitor.com
+Registrar Abuse Contact Phone: +1.2086851750
+Domain Status: clientUpdateProhibited (https://www.icann.org/epp#clientUpdateProhibited)
+Domain Status: clientTransferProhibited (https://www.icann.org/epp#clientTransferProhibited)
+Domain Status: clientDeleteProhibited (https://www.icann.org/epp#clientDeleteProhibited)
+Domain Status: serverUpdateProhibited (https://www.icann.org/epp#serverUpdateProhibited)
+Domain Status: serverTransferProhibited (https://www.icann.org/epp#serverTransferProhibited)
+Domain Status: serverDeleteProhibited (https://www.icann.org/epp#serverDeleteProhibited)
+Registry Registrant ID: 
+Registrant Name: Domain Administrator
+Registrant Organization: Microsoft Corporation
+Registrant Street: One Microsoft Way, 
+Registrant City: Redmond
+Registrant State/Province: WA
+Registrant Postal Code: 98052
+Registrant Country: US
+Registrant Phone: +1.4258828080
+Registrant Phone Ext: 
+Registrant Fax: +1.4259367329
+Registrant Fax Ext: 
+Registrant Email: admin@domains.microsoft
+Registry Admin ID: 
+Admin Name: Domain Administrator
+Admin Organization: Microsoft Corporation
+Admin Street: One Microsoft Way, 
+Admin City: Redmond
+Admin State/Province: WA
+Admin Postal Code: 98052
+Admin Country: US
+Admin Phone: +1.4258828080
+Admin Phone Ext: 
+Admin Fax: +1.4259367329
+Admin Fax Ext: 
+Admin Email: admin@domains.microsoft
+Registry Tech ID: 
+Tech Name: MSN Hostmaster
+Tech Organization: Microsoft Corporation
+Tech Street: One Microsoft Way, 
+Tech City: Redmond    ################ answer (e) ####################
+Tech State/Province: WA
+Tech Postal Code: 98052
+Tech Country: US
+Tech Phone: +1.4258828080
+Tech Phone Ext: 
+Tech Fax: +1.4259367329
+Tech Fax Ext: 
+Tech Email: msnhst@microsoft.com  ############## anwer (g) ##################
+Name Server: ns3-39.azure-dns.org
+Name Server: ns4-39.azure-dns.info
+Name Server: ns2-39.azure-dns.net
+Name Server: ns1-39.azure-dns.com
+...
+e. Which city is the registrant based in?
+sol. Redmond
+
+f. [OSINT] What is the name of the golf course that is near the registrant address for microsoft.com?
+sol. Bellevue Golf Course
+use internet and map to find that.
+
+g. What is the registered Tech Email for microsoft.com?
+sol. msnhst@microsoft.com
+
+TASK 8
+Dig
+- Domain name system (DNS) is a TCP/Ip protocol that converts URL to IP address.
+- DNS allows us to ask a special server to give us the IP address of the website we're trying to access.
 - 
