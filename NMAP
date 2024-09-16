@@ -1,3 +1,101 @@
+TASK 2: Introduction
+- When it comes to hacking, knowledge is power. The more knowledge you have about a target system or network, the more options you have available. This makes it imperative that proper enumeration is carried out before any exploitation attempts are made.
+- Say we have been given an IP (or multiple IP addresses) to perform a security audit on. 
+- Before we do anything else, we need to get an idea of the “landscape” we are attacking. What this means is that we need to establish which services are running on the targets. 
+  -> eg.  perhaps one of them is running a webserver, and another is acting as a Windows Active Directory Domain Controller. 
+- The first stage in establishing this “map” of the landscape is something called port scanning.
+- When a computer runs a network service, it opens a networking construct called a “port” to receive the connection.
+- Ports are necessary for making multiple network requests or having multiple services available. 
+  -> eg1. when you load several webpages at once in a web browser, the program must have some way of determining which tab is loading which web page.This is done by establishing connections to the remote webservers using different ports on your local machine. 
+  -> eg2. if you want a server to be able to run more than one service (for example, perhaps you want your webserver to run both HTTP and HTTPS versions of the site), then you need some way to direct the traffic to the appropriate service.
+     Once again, ports are the solution to this. Network connections are made between two ports – an open port listening on the server and a randomly selected port on your own computer.
+  -> For example, when you connect to a web page, your computer may open port 49534 to connect to the server’s port 443.
+- Every computer has 65,535 available ports, many of which are reserved for standard services. For example:
+  -> HTTP services use port 80.
+  -> HTTPS services use port 443.
+	-> Windows NETBIOS uses port 139.
+	-> SMB uses port 445.
+- In Capture the Flag (CTF) competitions or real-world scenarios, these standard ports may be altered. Therefore, it is crucial to perform proper enumeration to identify which ports are open and in use.
+- A port scan, typically conducted with nmap, is essential to determine which ports a server has open. Nmap connects to each port of the target and classifies them as:
+	-> Open (responding)
+	-> Closed (non-responding)
+	-> Filtered (usually blocked by a firewall)
+- Once the open ports are identified, services running on these ports can be enumerated manually or by using nmap.
+- Nmap is the industry-standard tool for port scanning due to its versatility and functionality. Its scripting engine allows for vulnerability scanning and, in some cases, direct exploitation.
+- Understanding port scanning, its necessity, and nmap's role is fundamental for successful initial enumeration and potential attack strategies.
+
+a. What networking constructs are used to direct traffic to the right application on a server?
+sol. Ports
+
+b. How many of these are available on any network-enabled computer?
+sol. 65535
+
+c. [Research] How many of these are considered "well-known"? (These are the "standard" numbers mentioned in the task)
+sol. 1024
+
+TASK 3:	NMAP Switch
+- Nmap can be accessed by typing nmap into the terminal command line,  followed by some of the "switches" (command arguments which tell a program to do different things)
+- To know all the switches available use the following commands.
+	-> nmap -h
+	-> man nmap
+
+a. What is the first switch listed in the help menu for a 'Syn Scan' (more on this later!)?
+sol. -sS
+
+b. Which switch would you use for a "UDP scan"?
+sol. -sU
+
+c.If you wanted to detect which operating system the target is running on, which switch would you use?
+sol. -O
+
+d. Nmap provides a switch to detect the version of the services running on the target. What is this switch?
+sol. -sV
+
+e. The default output provided by nmap often does not provide enough information for a pentester. How would you increase the verbosity?
+sol. -v
+
+f. Verbosity level one is good, but verbosity level two is better! How would you set the verbosity level to two?
+(Note: it's highly advisable to always use at least this option)
+sol. -vv
+
+g. We should always save the output of our scans -- this means that we only need to run the scan once (reducing network traffic and thus chance of detection), and gives us a reference to use when writing reports for clients.
+What switch would you use to save the nmap results in three major formats?
+sol. -oA
+
+h. What switch would you use to save the nmap results in a "normal" format?
+sol. -oN
+
+i. A very useful output format: how would you save results in a "grepable" format?
+sol. -oG
+
+j. Sometimes the results we're getting just aren't enough. If we don't care about how loud we are, we can enable "aggressive" mode. This is a shorthand switch that activates service detection, operating system detection, a traceroute and common script scanning.
+How would you activate this setting?
+sol. -A
+
+k. Nmap offers five levels of "timing" template. These are essentially used to increase the speed your scan runs at. Be careful though: higher speeds are noisier, and can incur errors!
+How would you set the timing template to level 5?
+sol. -T5
+
+l. We can also choose which port(s) to scan.
+How would you tell nmap to only scan port 80?
+sol. -p 80
+
+m. How would you tell nmap to scan ports 1000-1500?
+sol. -p 1000-1500
+
+n. A very useful option that should not be ignored:
+How would you tell nmap to scan all ports?
+sol. -p-
+
+o. How would you activate a script from the nmap scripting library (lots more on this later!)?
+sol. --script
+
+p. How would you activate all of the scripts in the "vuln" category?
+sol. --script=vuln
+
+TASK 4
+
+
 TASK 6 
 SYN SCANS (-sS)
 - SYN scans are used to scan the TCP port-range of a target or targets.
