@@ -93,8 +93,25 @@ sol. --script
 p. How would you activate all of the scripts in the "vuln" category?
 sol. --script=vuln
 
-TASK 4
+TASK 4 : Overview
+When port scanning with Nmap, there are three basic scan types. These are:
 
+TCP Connect Scans (-sT)
+SYN "Half-open" Scans (-sS)
+UDP Scans (-sU)
+Additionally there are several less common port scan types, some of which we will also cover (albeit in less detail). These are:
+
+TCP Null Scans (-sN)
+TCP FIN Scans (-sF)
+TCP Xmas Scans (-sX)
+
+TASK 5: TCP Connect Scan
+- The three-way handshake consists of three stages.
+syn	-> First the connecting terminal (our attacking machine, in this instance) sends a TCP request to the target server with the SYN flag set.
+syn/ack	-> The server then acknowledges this packet with a TCP response containing the SYN flag, as well as the ACK flag. 
+ack	-> Finally, our terminal completes the handshake by sending a TCP request with the ACK flag set.
+
+- 
 
 TASK 6 
 SYN SCANS (-sS)
