@@ -598,3 +598,127 @@ sol. telnet 10.10.10.3 23
 d. The lack of what, means that all Telnet communication is in plaintext?
 sol. encryption
 
+TASK 6: Enumerating Telnet
+Enumeration
+We've already seen how key enumeration can be in exploiting a misconfigured network service.
+However, vulnerabilities that could be potentially trivial to exploit don't always jump out at us.
+For that reason, especially when it comes to enumerating network services, we need to be thorough in our method. 
+Port Scanning
+Let's start out the same way we usually do, a port scan, to find out as much information as we can about the services, applications, structure and operating system of the target machine.Scan the machine with nmap.
+
+a. How many ports are open on the target machine?    
+sol. 1
+┌──(root㉿kali)-[/home/kali]
+└─# nmap -T4 -A -p- 10.10.40.173
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-09-17 09:57 EDT
+Nmap scan report for 10.10.40.173
+Host is up (0.19s latency).
+Not shown: 65534 closed tcp ports (reset)
+PORT     STATE SERVICE VERSION
+8012/tcp open  unknown
+| fingerprint-strings: 
+|   DNSStatusRequestTCP, DNSVersionBindReqTCP, FourOhFourRequest, GenericLines, GetRequest, HTTPOptions, Help, Kerberos, LANDesk-RC, LDAPBindReq, LDAPSearchReq, LPDString, NCP, NULL, RPCCheck, RTSPRequest, SIPOptions, SMBProgNeg, SSLSessionReq, TLSSessionReq, TerminalServer, TerminalServerCookie, X11Probe: 
+|_    SKIDY'S BACKDOOR. Type .HELP to view commands
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port8012-TCP:V=7.94SVN%I=7%D=9/17%Time=66E98DF5%P=x86_64-pc-linux-gnu%r
+SF:(NULL,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20to\x20view\x20comm
+SF:ands\n")%r(GenericLines,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20
+SF:to\x20view\x20commands\n")%r(GetRequest,2E,"SKIDY'S\x20BACKDOOR\.\x20Ty
+SF:pe\x20\.HELP\x20to\x20view\x20commands\n")%r(HTTPOptions,2E,"SKIDY'S\x2
+SF:0BACKDOOR\.\x20Type\x20\.HELP\x20to\x20view\x20commands\n")%r(RTSPReque
+SF:st,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20to\x20view\x20command
+SF:s\n")%r(RPCCheck,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20to\x20v
+SF:iew\x20commands\n")%r(DNSVersionBindReqTCP,2E,"SKIDY'S\x20BACKDOOR\.\x2
+SF:0Type\x20\.HELP\x20to\x20view\x20commands\n")%r(DNSStatusRequestTCP,2E,
+SF:"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20to\x20view\x20commands\n")%
+SF:r(Help,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20to\x20view\x20com
+SF:mands\n")%r(SSLSessionReq,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x
+SF:20to\x20view\x20commands\n")%r(TerminalServerCookie,2E,"SKIDY'S\x20BACK
+SF:DOOR\.\x20Type\x20\.HELP\x20to\x20view\x20commands\n")%r(TLSSessionReq,
+SF:2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20to\x20view\x20commands\n
+SF:")%r(Kerberos,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20to\x20view
+SF:\x20commands\n")%r(SMBProgNeg,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HE
+SF:LP\x20to\x20view\x20commands\n")%r(X11Probe,2E,"SKIDY'S\x20BACKDOOR\.\x
+SF:20Type\x20\.HELP\x20to\x20view\x20commands\n")%r(FourOhFourRequest,2E,"
+SF:SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20to\x20view\x20commands\n")%r
+SF:(LPDString,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20to\x20view\x2
+SF:0commands\n")%r(LDAPSearchReq,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HE
+SF:LP\x20to\x20view\x20commands\n")%r(LDAPBindReq,2E,"SKIDY'S\x20BACKDOOR\
+SF:.\x20Type\x20\.HELP\x20to\x20view\x20commands\n")%r(SIPOptions,2E,"SKID
+SF:Y'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20to\x20view\x20commands\n")%r(LAN
+SF:Desk-RC,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP\x20to\x20view\x20co
+SF:mmands\n")%r(TerminalServer,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\x20\.HELP
+SF:\x20to\x20view\x20commands\n")%r(NCP,2E,"SKIDY'S\x20BACKDOOR\.\x20Type\
+SF:x20\.HELP\x20to\x20view\x20commands\n");
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.94SVN%E=4%D=9/17%OT=8012%CT=1%CU=31977%PV=Y%DS=2%DC=T%G=Y%TM=66
+OS:E98EA2%P=x86_64-pc-linux-gnu)SEQ(SP=102%GCD=1%ISR=10A%TI=Z%CI=Z%II=I%TS=
+OS:A)OPS(O1=M508ST11NW7%O2=M508ST11NW7%O3=M508NNT11NW7%O4=M508ST11NW7%O5=M5
+OS:08ST11NW7%O6=M508ST11)WIN(W1=F4B3%W2=F4B3%W3=F4B3%W4=F4B3%W5=F4B3%W6=F4B
+OS:3)ECN(R=Y%DF=Y%T=40%W=F507%O=M508NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S
+OS:+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=
+OS:)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%
+OS:A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%
+OS:DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=
+OS:40%CD=S)
+
+Network Distance: 2 hops
+
+TRACEROUTE (using port 8888/tcp)
+HOP RTT       ADDRESS
+1   202.31 ms 10.9.0.1
+2   202.55 ms 10.10.40.173
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 997.94 seconds
+
+b. What port is this?
+sol. 8012
+
+c. This port is unassigned, but still lists the protocol it's using, what protocol is this?     
+sol. TCP
+
+d. Now re-run the nmap scan, without the -p- tag, how many ports show up as open?
+sol. 0
+
+┌──(root㉿kali)-[/home/kali]
+└─# nmap -T4 -A 10.10.40.173 
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-09-17 10:20 EDT
+Nmap scan report for 10.10.40.173
+Host is up (0.20s latency).
+All 1000 scanned ports on 10.10.40.173 are in ignored states.
+Not shown: 1000 closed tcp ports (reset)
+Too many fingerprints match this host to give specific OS details
+Network Distance: 2 hops
+
+TRACEROUTE (using port 1723/tcp)
+HOP RTT       ADDRESS
+1   195.83 ms 10.9.0.1
+2   196.09 ms 10.10.40.173
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 5.38 seconds
+
+Here, we see that by assigning telnet to a non-standard port, it is not part of the common ports list, or top 1000 ports, that nmap scans. It's important to try every angle when enumerating, as the information you gather here will inform your exploitation stage.
+
+e. Based on the title returned to us, what do we think this port could be used for?
+sol. a Backdoor
+If you refer to the first nmap result you could see "SKIDY'S BACKDOOR" is returned indicating it is a backdoor created by a script kidy.
+
+f. Who could it belong to? Gathering possible usernames is an important step in enumeration.
+sol. Skidy
+When I tried connecting to it through telnet 
+┌──(root㉿kali)-[/home/kali]
+└─# telnet 10.10.40.173 8012
+Trying 10.10.40.173...
+Connected to 10.10.40.173.
+Escape character is '^]'.
+SKIDY'S BACKDOOR. Type .HELP to view commands
+help
+
+Some systems display a login banner or message upon connecting via Telnet. This may include details about the owner or organization.
+and here It says Skidy's Backdoor so this must belong to the Skidy.
+
+TASK 7: Exploiting Telnet
+
