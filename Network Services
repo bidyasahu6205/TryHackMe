@@ -721,4 +721,19 @@ Some systems display a login banner or message upon connecting via Telnet. This 
 and here It says Skidy's Backdoor so this must belong to the Skidy.
 
 TASK 7: Exploiting Telnet
+Types of Telnet Exploit
+- Telnet lacks encryption, so sends all communication over plaintext, and for the most part has poor access control. 
+- A CVE, short for Common Vulnerabilities and Exposures, is a list of publicly disclosed computer security flaws. When someone refers to a CVE, they usually mean the CVE ID number assigned to a security flaw.
+  There are CVE's for Telnet client and server systems, however, so when exploiting you can check for those on:
+   -> https://www.cvedetails.com/
+   -> https://cve.mitre.org/
+- Let's Connect to the previous machine using the backdoor hidden telnet service using the comm
+             telnet 10.10.21.254 8012
 
+What is a Reverse Shell?
+- A "shell" can simply be described as a piece of code or program which can be used to gain code or command execution on a device.
+- A reverse shell is a type of shell in which the target machine communicates back to the attacking machine.
+- The attacking machine has a listening port, on which it receives the connection, resulting in code or command execution being achieved.
+
+a. Okay, let's try and connect to this telnet port! If you get stuck, have a look at the syntax for connecting outlined above.
+sol. 
