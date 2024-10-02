@@ -168,3 +168,9 @@ A Request for Comments (RFC) is a publication in a series from the principal tec
 - Xmas scan (-sX) 
 	-> send a malformed TCP packet and expects a RST response for closed ports. 
 	->  It's referred to as an xmas scan as the flags that it sets (PSH, URG and FIN) give it the appearance of a blinking christmas tree when viewed as a packet capture in Wireshark.
+- The expected response for open ports with these scans is also identical, and is very similar to that of a UDP scan.
+- If the port is open then there is no response to the malformed packet.
+- Unfortunately (as with open UDP ports), that is also an expected behaviour if the port is protected by a firewall, so NULL, FIN and Xmas scans will only ever identify ports as being open|filtered, closed, or filtered.
+- If a port is identified as filtered then it is usually because the target has responded with an ICMP unreachable packet.
+- while RFC 793 mandates that network hosts respond to malformed packets with a RST TCP packet for closed ports, and don't respond at all for open ports; 
+
