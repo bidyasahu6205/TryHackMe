@@ -202,3 +202,83 @@ a. How would you perform a ping sweep on the 172.16.x.x network (Netmask: 255.25
 sol. nmap -sn 172.16.0.0/16
 
 TASK 10: Overview
+- The Nmap Scripting Engine (NSE) is an incredibly powerful addition to Nmap.
+- NSE Scripts are written in the Lua programming language, and can be used to do a variety of things.
+	-> scanning for vulnerabilities
+	-> automating exploits for them
+	-> reconnaisance
+- There are many categories available. Some useful categories include:
+	-> safe:- Won't affect the target
+	-> intrusive:- Not safe: likely to affect the target
+	-> vuln:- Scan for vulnerabilities
+	-> exploit:- Attempt to exploit a vulnerability
+	-> auth:- Attempt to bypass authentication for running services (e.g. Log into an FTP server anonymously)
+	-> brute:- Attempt to bruteforce credentials for running services
+	-> discovery:- Attempt to query running services for further information about the network (e.g. query an SNMP server).
+- for more list refer : https://nmap.org/book/nse-usage.html
+
+a. What language are NSE scripts written in?
+sol. Lua
+
+b. Which category of scripts would be a very bad idea to run in a production environment?
+sol. intrusive
+
+TASK 11 : Working with NSE
+- To run a specific script, we would use --script=<script-name>
+	e.g: --script=http-fileupload-exploiter
+- Multiple scripts can be run simultaneously in this fashion by separating them by a comma.
+	e.g: --script=smb-enum-users,smb-enum-shares.
+- Some scripts require arguments (for example, credentials, if they're exploiting an authenticated vulnerability). These can be given with the --script-args Nmap switch.
+- An example of this would be with the http-put script (used to upload files using the PUT method). This takes two arguments: the URL to upload the file to, and the file's location on disk.  For example:
+	nmap -p 80 --script http-put --script-args http-put.url='/dav/shell.php',http-put.file='./shell.php'
+- Note that the arguments are separated by commas, and connected to the corresponding script with periods (i.e.  <script-name>.<argument>).
+- full list of scripts and their argument can be refered from : https://nmap.org/nsedoc/
+- Nmap scripts come with built-in help menus, which can be accessed using nmap --script-help <script-name>
+
+a. What optional argument can the ftp-anon.nse script take?
+sol. maxlist
+
+TASK 12: Searching for scripts
+- Way to find nmap Scripts:
+	i. the page on the Nmap website ( https://nmap.org/nsedoc/ ) which contains a list of all official scripts.
+	ii. the local storage,  Nmap stores its scripts on Linux at /usr/share/nmap/scripts.
+		All of the NSE scripts are stored in this directory by default -- this is where Nmap looks for scripts when you specify them.
+		e.g:  ls -l /usr/share/nmap/scripts/*ftp*
+	iii. One is by using the /usr/share/nmap/scripts/script.db file
+		Nmap uses this file to keep track of (and utilise) scripts for the scripting engine; however, we can also grep through it to look for scripts. 
+		e.g: grep "ftp" /usr/share/nmap/scripts/script.db
+- Installing New Scripts
+	-> the Nmap website contains a list of scripts, so, what happens if one of these is missing in the scripts directory locally?
+	-> " sudo apt update && sudo apt install nmap " should fix this
+	-> it's also possible to install the scripts manually by downloading the script from Nmap
+	-> Syntax: sudo wget -O /usr/share/nmap/scripts/<script-name>.nse https://svn.nmap.org/nmap/scripts/<script-name>.nse
+
+a. Search for "smb" scripts in the /usr/share/nmap/scripts/ directory using either of the demonstrated methods.
+What is the filename of the script which determines the underlying OS of the SMB server?
+sol. smb-os-discovery.nse
+
+b. Read through this script. What does it depend on?
+sol. smb-brute
+
+TASK 13: Firewall Evasion
+- Your typical Windows host will, with its default firewall, block all ICMP packets.
+- This presents a problem: not only do we often use ping to manually establish the activity of a target, Nmap does the same thing by default. 
+- This means that Nmap will register a host with this firewall configuration as dead and not bother scanning it at all.
+- So, we need a way to get around this configuration. Fortunately Nmap provides an option for this: -Pn
+- which tells Nmap to not bother pinging the host before scanning it. This means that Nmap will always treat the target host(s) as being alive, effectively bypassing the ICMP block
+- however, it comes at the price of potentially taking a very long time to complete the scan (if the host really is dead then Nmap will still be checking and double checking every specified port).
+- There are a variety of other switches which Nmap considers useful for firewall evasion
+- We will not go through these in detail, however, they can be found : https://nmap.org/book/man-bypass-firewalls-ids.html
+	-> -f:- Used to fragment the packets (i.e. split them into smaller pieces) making it less likely that the packets will be detected by a firewall or IDS.
+	-> An alternative to -f, but providing more control over the size of the packets: --mtu <number>, accepts a maximum transmission unit size to use for the packets sent. This must be a multiple of 8.
+	-> --scan-delay <time>ms:- used to add a delay between packets sent. This is very useful if the network is unstable, but also for evading any time-based firewall/IDS triggers which may be in place.
+	-> --badsum:- this is used to generate in invalid checksum for packets. Any real TCP/IP stack would drop this packet, however, firewalls may potentially respond automatically,
+	without bothering to check the checksum of the packet. As such, this switch can be used to determine the presence of a firewall/IDS.
+
+a. Which simple (and frequently relied upon) protocol is often blocked, requiring the use of the -Pn switch?
+sol. ICMP
+
+b. [Research] Which Nmap switch allows you to append an arbitrary length of random data to the end of packets?
+sol. --data-length
+
+TASK 14: 
