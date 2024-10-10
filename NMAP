@@ -318,6 +318,38 @@ sol. No Response
 d. Perform a TCP SYN scan on the first 5000 ports of the target -- how many ports are shown to be open?
 sol. 5
 
+┌──(root㉿kali)-[/home/kali]
+└─# nmap -Pn -sS -p1-5000 10.10.140.235
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-10-10 09:34 EDT
+Nmap scan report for 10.10.140.235
+Host is up (0.19s latency).
+Not shown: 4995 filtered tcp ports (no-response)
+PORT     STATE SERVICE
+21/tcp   open  ftp
+53/tcp   open  domain
+80/tcp   open  http
+135/tcp  open  msrpc
+3389/tcp open  ms-wbt-server
+
+Nmap done: 1 IP address (1 host up) scanned in 32.95 seconds
+
 e. Open Wireshark (see Cryillic's Wireshark Room for instructions) and perform a TCP Connect scan against port 80 on the target, monitoring the results.
    Make sure you understand what's going on. Deploy the ftp-anon script against the box. Can Nmap login successfully to the FTP server on port 21? (Y/N)
 sol. Y
+
+┌──(root㉿kali)-[/home/kali]
+└─# nmap -Pn --script=ftp-anon.nse 10.10.140.235
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-10-10 09:48 EDT
+Nmap scan report for 10.10.140.235
+Host is up (0.19s latency).
+Not shown: 995 filtered tcp ports (no-response)
+PORT     STATE SERVICE
+21/tcp   open  ftp
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+|_Can't get directory listing: TIMEOUT
+53/tcp   open  domain
+80/tcp   open  http
+135/tcp  open  msrpc
+3389/tcp open  ms-wbt-server
+
+Nmap done: 1 IP address (1 host up) scanned in 42.59 seconds
