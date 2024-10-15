@@ -859,4 +859,30 @@ flag.txt
 cat flag.txt
 THM{y0u_g0t_th3_t3ln3t_fl4g}
 
-TASK 8: 
+TASK 8: Understanding FTP
+- File Transfer Protocol (FTP) is a protocol used to allow remote transfer of files over a network.
+- It uses a client-server model to do this, and relays commands and data in a very efficient way.
+- FTP session operates using two channels:
+   i. a command (sometimes called the control) channel
+        -> the command channel is used for transmitting commands as well as replies to those commands
+   ii. a data channel.
+        -> the data channel is used for transferring data
+- FTP operates using a client-server protocol. The client initiates a connection with the server, the server validates whatever login credentials are provided and then opens the session.
+- While the session is open, the client may execute FTP commands on the server.
+- The FTP server may support either Active or Passive connections, or both. 
+   i.  In an Active FTP connection, the client opens a port and listens. The server is required to actively connect to it. 
+   ii. In a Passive FTP connection, the server opens a port and listens (passively) and the client connects to it. 
+- This separation of command information and data into separate channels is a way of being able to send commands to the server without having to wait for the current data transfer to finish. 
+- You can find more details on the technical function, and implementation of, FTP on the Internet Engineering Task Force website: https://www.ietf.org/rfc/rfc959.txt. The IETF is one of a number of standards agencies, who define and regulate internet standards.
+
+a. What communications model does FTP use?
+sol. client-server
+
+b. What's the standard FTP port?
+sol. 21
+
+c. How many modes of FTP connection are there?    
+sol. 2
+
+TASK 9: Enumerating FTP
+- 
