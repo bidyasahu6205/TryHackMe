@@ -1,1 +1,47 @@
 TASK 2: Understanding NFS
+- NFS stands for "Network File System" and allows a system to share directories and files with others over a network.
+- By using NFS, users and programs can access files on remote systems almost as if they were local files.
+- It does this by mounting all, or a portion of a file system on a server. 
+- The portion of the file system that is mounted can be accessed by clients with whatever privileges are assigned to each file
+- First, the client will request to mount a directory from a remote host on a local directory just the same way it can mount a physical device.
+- The mount service will then act to connect to the relevant mount daemon using RPC.
+- The server checks if the user has permission to mount whatever directory has been requested. It will then return a file handle which uniquely identifies each file and directory that is on the server.
+- If someone wants to access a file using NFS, an RPC call is placed to NFSD (the NFS daemon) on the server. 
+  -> This call takes parameters such as:
+    i.  The file handle
+    ii. The name of the file to be accessed
+    iii. The user's, user ID
+    iv. The user's group ID
+  -> These are used in determining access rights to the specified file. This is what controls user permissions, I.E read and write of files.
+- Using the NFS protocol, you can transfer files between computers running Windows and other non-Windows operating systems, such as Linux, MacOS or UNIX.
+- A computer running Windows Server can act as an NFS file server for other non-Windows client computers. Likewise, NFS allows a Windows-based computer running Windows Server to access files stored on a non-Windows NFS server.
+- More information:
+  i. https://www.datto.com/blog/what-is-nfs-file-share/
+  ii. http://nfs.sourceforge.net/
+  iii. https://wiki.archlinux.org/index.php/NFS
+
+a. What does NFS stand for?
+sol. Network File System
+
+b. What process allows an NFS client to interact with a remote directory as though it was a physical device?
+sol. mounting
+
+c. What does NFS use to represent files and directories on the server?
+sol.  file handle
+
+d. What protocol does NFS use to communicate between the server and client?
+sol. RPC
+
+e. What two pieces of user data does the NFS server take as parameters for controlling user permissions? Format: parameter 1 / parameter 2
+sol. user id/group id
+
+f. Can a Windows NFS server share files with a Linux client? (Y/N)
+sol. Y
+
+g. Can a Linux NFS server share files with a MacOS client? (Y/N)
+sol. Y
+
+h. What is the latest version of NFS? [released in 2016, but is still up to date as of 2020] This will require external research.
+sol. 4.2
+
+TASK 3: Enumerating NFS
