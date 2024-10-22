@@ -423,3 +423,242 @@ h. Can a Windows machine run an SMTP server? (Y/N)
 sol. Y
 
 TASK 6: Enumerating SMTP
+- Poorly configured or vulnerable mail servers can often provide an initial foothold into a network
+- but prior to launching an attack, we want to fingerprint the server to make our targeting as precise as possible.
+- We're going to use the "smtp_version" module in MetaSploit to do this.
+- As its name implies, it will scan a range of IP addresses and determine the version of any mail servers it encounters.
+- Enumerating Users from SMTP
+	-> The SMTP service has two internal commands that allow the enumeration of users:
+		~ VRFY (confirming the names of valid users) 
+		~ EXPN (which reveals the actual address of user’s aliases and lists of e-mail (mailing lists).
+	-> Using these SMTP commands, we can reveal a list of valid users
+	-> We can do this manually, over a telnet connection- however Metasploit comes to the rescue again, providing a handy module appropriately called "smtp_enum" that will do the legwork for us!
+	-> Using the module is a simple matter of feeding it a host or range of hosts to scan and a wordlist containing usernames to enumerate.
+- Requirements : Metasploit
+- Alternatives
+It's worth noting that this enumeration technique will work for the majority of SMTP configurations; however there are other, non-metasploit tools such as smtp-user-enum that work even better for enumerating OS-level user accounts on Solaris via the SMTP service. Enumeration is performed by inspecting the responses to VRFY, EXPN, and RCPT TO commands.
+This technique could be adapted in future to work against other vulnerable SMTP daemons, but this hasn’t been done as of the time of writing. It's an alternative that's worth keeping in mind if you're trying to distance yourself from using Metasploit e.g. in preparation for OSCP.
+
+a. First, lets run a port scan against the target machine, same as last time. What port is SMTP running on?
+sol. 25
+Nmap scan report for 10.10.249.76
+Host is up (0.19s latency).
+Not shown: 65533 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 62:a7:03:13:39:08:5a:07:80:1a:e5:27:ee:9b:22:5d (RSA)
+|   256 89:d0:40:92:15:09:39:70:17:6e:c5:de:5b:59:ee:cb (ECDSA)
+|_  256 56:7c:d0:c4:95:2b:77:dd:53:d6:e6:73:99:24:f6:86 (ED25519)
+25/tcp open  smtp    Postfix smtpd
+|_smtp-commands: polosmtp.home, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN, SMTPUTF8
+|_ssl-date: TLS randomness does not represent time
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.94SVN%E=4%D=10/22%OT=22%CT=1%CU=31359%PV=Y%DS=2%DC=T%G=Y%TM=671
+OS:7A7C1%P=x86_64-pc-linux-gnu)SEQ(SP=105%GCD=1%ISR=107%TI=Z%CI=Z%TS=A)SEQ(
+OS:SP=105%GCD=1%ISR=107%TI=Z%CI=Z%TS=D)SEQ(SP=105%GCD=1%ISR=107%TI=Z%CI=Z%I
+OS:I=I%TS=A)SEQ(SP=106%GCD=1%ISR=106%TI=Z%CI=Z%II=I%TS=A)OPS(O1=M508ST11NW6
+OS:%O2=M508ST11NW6%O3=M508NNT11NW6%O4=M508ST11NW6%O5=M508ST11NW6%O6=M508ST1
+OS:1)WIN(W1=F4B3%W2=F4B3%W3=F4B3%W4=F4B3%W5=F4B3%W6=F4B3)ECN(R=Y%DF=Y%T=40%
+OS:W=F507%O=M508NNSNW6%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R=
+OS:N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=
+OS:0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T
+OS:7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=40%IPL=164%UN
+OS:=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=S)
+
+Network Distance: 2 hops
+Service Info: Host:  polosmtp.home; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+                                                                                                                    
+TRACEROUTE (using port 80/tcp)                                                                                      
+HOP RTT       ADDRESS
+1   181.53 ms 10.9.0.1
+2   181.81 ms 10.10.249.76
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 1310.85 seconds
+
+b. Okay, now we know what port we should be targeting, let's start up Metasploit. What command do we use to do this?
+If you would like some more help or practice using Metasploit, TryHackMe has a module on Metasploit that you can check out here:
+https://tryhackme.com/module/metasploit
+sol. msfconsole
+┌──(kali㉿kali)-[~]
+└─$ sudo msfconsole 
+Metasploit tip: Use the analyze command to suggest runnable modules for 
+hosts
+                                                  
+Call trans opt: received. 2-19-98 13:24:18 REC:Loc
+
+     Trace program: running
+
+           wake up, Neo...
+        the matrix has you
+      follow the white rabbit.
+
+          knock, knock, Neo.
+
+                        (`.         ,-,
+                        ` `.    ,;' /
+                         `.  ,'/ .'
+                          `. X /.'
+                .-;--''--.._` ` (
+              .'            /   `
+             ,           ` '   Q '
+             ,         ,   `._    \
+          ,.|         '     `-.;_'
+          :  . `  ;    `  ` --,.._;
+           ' `    ,   )   .'
+              `._ ,  '   /_
+                 ; ,''-,;' ``-
+                  ``-..__``--`
+
+                             https://metasploit.com
+
+
+       =[ metasploit v6.3.55-dev                          ]
++ -- --=[ 2397 exploits - 1235 auxiliary - 422 post       ]
++ -- --=[ 1391 payloads - 46 encoders - 11 nops           ]
++ -- --=[ 9 evasion                                       ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+
+msf6 > 
+
+c. Let's search for the module "smtp_version", what's it's full module name?
+sol. auxiliary/scanner/smtp/smtp_version
+msf6 > search smtp_version
+
+Matching Modules
+================
+
+   #  Name                                 Disclosure Date  Rank    Check  Description
+   -  ----                                 ---------------  ----    -----  -----------
+   0  auxiliary/scanner/smtp/smtp_version                   normal  No     SMTP Banner Grabber
+
+
+Interact with a module by name or index. For example info 0, use 0 or use auxiliary/scanner/smtp/smtp_version
+
+msf6 > 
+
+d. Great, now- select the module and list the options. How do we do this?
+sol. options
+msf6 > use auxiliary/scanner/smtp/smtp_version
+msf6 auxiliary(scanner/smtp/smtp_version) > show options
+
+Module options (auxiliary/scanner/smtp/smtp_version):
+
+   Name     Current Setting  Required  Description
+   ----     ---------------  --------  -----------
+   RHOSTS                    yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/b
+                                       asics/using-metasploit.html
+   RPORT    25               yes       The target port (TCP)
+   THREADS  1                yes       The number of concurrent threads (max one per host)
+
+
+View the full module info with the info, or info -d command.
+
+msf6 auxiliary(scanner/smtp/smtp_version) >
+
+e. Have a look through the options, does everything seem correct? What is the option we need to set?
+sol. RHOSTS
+
+msf6 auxiliary(scanner/smtp/smtp_version) > set RHOST 10.10.249.76
+RHOST => 10.10.249.76
+
+f. Set that to the correct value for your target machine. Then run the exploit. What's the system mail name?
+sol. polosmtp.home
+msf6 auxiliary(scanner/smtp/smtp_version) > show options
+
+Module options (auxiliary/scanner/smtp/smtp_version):
+
+   Name     Current Setting  Required  Description
+   ----     ---------------  --------  -----------
+   RHOSTS   10.10.249.76     yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/b
+                                       asics/using-metasploit.html
+   RPORT    25               yes       The target port (TCP)
+   THREADS  1                yes       The number of concurrent threads (max one per host)
+
+
+View the full module info with the info, or info -d command.
+
+msf6 auxiliary(scanner/smtp/smtp_version) > run
+
+[+] 10.10.249.76:25       - 10.10.249.76:25 SMTP 220 polosmtp.home ESMTP Postfix (Ubuntu)\x0d\x0a
+[*] 10.10.249.76:25       - Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+msf6 auxiliary(scanner/smtp/smtp_version) >
+
+g. What Mail Transfer Agent (MTA) is running the SMTP server? This will require some external research.
+sol. Postfix
+
+h. Good! We've now got a good amount of information on the target system to move onto the next stage. Let's search for the module "smtp_enum", what's it's full module name?
+sol. auxiliary/scanner/smtp/smtp_enum 
+msf6 auxiliary(scanner/smtp/smtp_version) >back
+msf6 > search smtp_enum
+
+Matching Modules
+================
+
+   #  Name                              Disclosure Date  Rank    Check  Description
+   -  ----                              ---------------  ----    -----  -----------
+   0  auxiliary/scanner/smtp/smtp_enum                   normal  No     SMTP User Enumeration Utility
+
+
+Interact with a module by name or index. For example info 0, use 0 or use auxiliary/scanner/smtp/smtp_enum
+
+i. We're going to be using the "top-usernames-shortlist.txt" wordlist from the Usernames subsection of seclists (/usr/share/wordlists/SecLists/Usernames if you have it installed).
+Seclists is an amazing collection of wordlists. If you're running Kali or Parrot you can install seclists with: "sudo apt install seclists" Alternatively, you can download the repository from here.
+What option do we need to set to the wordlist's path?
+sol. USER_FILE
+msf6 auxiliary(scanner/smtp/smtp_enum) > show options
+
+Module options (auxiliary/scanner/smtp/smtp_enum):
+
+   Name       Current Setting                   Required  Description
+   ----       ---------------                   --------  -----------
+   RHOSTS                                       yes       The target host(s), see https://docs.metasploit.com/docs
+                                                          /using-metasploit/basics/using-metasploit.html
+   RPORT      25                                yes       The target port (TCP)
+   THREADS    1                                 yes       The number of concurrent threads (max one per host)
+   UNIXONLY   true                              yes       Skip Microsoft bannered servers when testing unix users
+   USER_FILE  /usr/share/metasploit-framework/  yes       The file that contains a list of probable users accounts
+              data/wordlists/unix_users.txt               .
+
+
+View the full module info with the info, or info -d command.
+
+j. Once we've set this option, what is the other essential paramater we need to set?
+sol. RHOSTS
+
+msf6 auxiliary(scanner/smtp/smtp_enum) > set RHOSTS 10.10.249.76
+RHOSTS => 10.10.249.76
+msf6 auxiliary(scanner/smtp/smtp_enum) > set USER_FILE /usr/share/seclists/Usernames/cirt-default-usernames.txt
+USER_FILE => /usr/share/seclists/Usernames/cirt-default-usernames.txt
+msf6 auxiliary(scanner/smtp/smtp_enum) > show options
+
+Module options (auxiliary/scanner/smtp/smtp_enum):
+
+   Name       Current Setting                   Required  Description
+   ----       ---------------                   --------  -----------
+   RHOSTS     10.10.249.76                      yes       The target host(s), see https://docs.metasploit.com/docs
+                                                          /using-metasploit/basics/using-metasploit.html
+   RPORT      25                                yes       The target port (TCP)
+   THREADS    1                                 yes       The number of concurrent threads (max one per host)
+   UNIXONLY   true                              yes       Skip Microsoft bannered servers when testing unix users
+   USER_FILE  /usr/share/seclists/Usernames/ci  yes       The file that contains a list of probable users accounts
+              rt-default-usernames.txt                    .
+
+
+View the full module info with the info, or info -d command.
+
+k. Now, run the exploit, this may take a few minutes, so grab a cup of tea, coffee, water. Keep yourself hydrated!
+Okay! Now that's finished, what username is returned?
+sol. 
+msf6 auxiliary(scanner/smtp/smtp_enum) > run
+
+[*] 10.10.249.76:25       - 10.10.249.76:25 Banner: 220 polosmtp.home ESMTP Postfix (Ubuntu)
+[+] 10.10.249.76:25       - 10.10.249.76:25 Users found: (NULL), (any), (created), ADMINISTRATOR, Administrator, BACKUP, MAIL, NEWS, POSTMASTER, SYS, administrator, bin, daemon, games, lp, mail, man, news, nobody, postmaster, root@localhost, sync, sys, uucp
+[*] 10.10.249.76:25       - Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+
+TASK 7: Exploiting SMTP
