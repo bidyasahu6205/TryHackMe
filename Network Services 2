@@ -748,3 +748,38 @@ administrator@polosmtp:~$ cat smtp.txt
 THM{who_knew_email_servers_were_c00l?}
 
 TASK 8: Understanding MySQL
+- MySQL is a relational database management system (RDBMS) based on Structured Query Language (SQL). 
+- A database is simply a persistent, organised collection of structured data
+- A software or service used to create and manage databases based on a relational model.
+- The word "relational" just means that the data stored in the dataset is organised as tables. Every table relates in some way to each other's "primary key" or other "key" factors.
+- MYSQL is just a brand name for one of the most popular RDBMS software implementations. As we know, it uses a client-server model.
+- client and server use a language, specifically the Structured Query Language (SQL) to communicate.
+- Many other products, such as PostgreSQL and Microsoft SQL server, have the word SQL in them. This similarly signifies that this is a product utilising the Structured Query Language syntax.
+- MySQL, as an RDBMS, is made up of the server and utility programs that help in the administration of MySQL databases.
+- The server handles all database instructions like creating, editing, and accessing data. It takes and manages these requests and communicates using the MySQL protocol. 
+- This whole process can be broken down into these stages:
+	-> MySQL creates a database for storing and manipulating data, defining the relationship of each table.
+	-> Clients make requests by making specific statements in SQL.
+	-> The server will respond to the client with whatever information has been requested.
+- MySQL can run on various platforms, whether it's Linux or windows. It is commonly used as a back end database for many prominent websites and forms an essential component of the LAMP stack, which includes: Linux, Apache, MySQL, and PHP.
+- The LAMP stack is a popular set of open-source software used for building dynamic websites and web applications. 
+- Here are some resources that explain the technical implementation, and working of, MySQL in more detail than I have covered here:
+	~ https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_SQL_EXECUTION.html 
+	~ https://www.w3schools.com/php/php_mysql_intro.asp
+
+a. What type of software is MySQL?
+sol. relational database management system
+
+b. What language is MySQL based on?
+sol. SQL
+
+c. What communication model does MySQL use?
+sol. client-server
+
+d. What is a common application of MySQL?
+sol. back end database
+
+e. What major social network uses MySQL as their back-end database? This will require further research.
+sol. Facebook
+
+TASK 9: Enumerating MySQL
