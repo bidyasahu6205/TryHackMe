@@ -1,1 +1,11 @@
 TASK 1: How websites work
+- When you visit a website, your browser (like Safari or Google Chrome) makes a request to a web server asking for information about the page you're visiting. 
+- It will respond with data that your browser uses to show you the page; a web server is just a dedicated computer somewhere else in the world that handles your requests.
+- There are two major components that make up a website:
+        i. Front End (Client-Side) - the way your browser renders a website.
+        ii. Back End (Server-Side) - a server that processes your request and returns a response.
+
+a. What term best describes the component of a web application rendered by your browser?
+sol. Front End
+
+TASK 2: HTML
