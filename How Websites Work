@@ -46,8 +46,56 @@ The HTML structure (as shown in the screenshot) has the following components:
 a. Let's play with some HTML! First click the "View Site" button inside this task. On the right-hand side, you should see a box that renders HTML - If you enter some HTML into the box and click the green "Render HTML Code" button, it will render your HTML on the page; you should see an image of some cats.
    One of the images on the cat website is broken - fix it, and the image will reveal the hidden text answer!
 sol. HTMLHERO
+________________________________________________________________________________________________________________________________
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TryHackMe HTML Editor</title>
+    </head>
+    <body>
+        <h1>Cat Website!</h1>
+        <p>See images of all my cats!</p>
+        <img src='img/cat-1.jpg'>
+        <img src='img/cat-2.'> <!--here we have to complete the path for it to get the picture-->
+        <!-- Add dog image here -->
+    </body>
+</html>
+________________________________________________________________________________________________________________________________
+________________________________________________________________________________________________________________________________
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TryHackMe HTML Editor</title>
+    </head>
+    <body>
+        <h1>Cat Website!</h1>
+        <p>See images of all my cats!</p>
+        <img src='img/cat-1.jpg'>
+        <img src='img/cat-2.jpg'> 
+        <!-- Add dog image here -->
+    </body>
+</html>
+________________________________________________________________________________________________________________________________
+Then you will get the cat picture with a text on it i.e HTMLHERO
 
 b. Add a dog image to the page by adding another img tag (<img>) on line 11. The dog image location is img/dog-1.png. What is the text in the dog image?
 sol. DOGHTML
+html code after adding the dog picture
+________________________________________________________________________________________________________________________________
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TryHackMe HTML Editor</title>
+    </head>
+    <body>
+        <h1>Cat Website!</h1>
+        <p>See images of all my cats!</p>
+        <img src='img/cat-1.jpg'>
+        <img src='img/cat-2.jpg'> <!--here we have to complete the path for it to get the picture-->
+        <img src='img/dog-1.png'> <!-- Add dog image here -->
+    </body>
+</html>
+________________________________________________________________________________________________________________________________
+Then you will get the dog picture with a text on it i.e DOGHTML
 
 TASK 3: JavaScript
