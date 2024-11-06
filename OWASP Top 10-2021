@@ -10,3 +10,7 @@ TASK 1: Introduction
 9.  Security Logging & Monitoring Failures
 10. Server-Side Request Forgery (SSRF)
 
+TASK 2: Accessing Machines
+a. Connect to our network
+- Download the compartible configuration file from: https://tryhackme.com/r/access
+- then use the command: openvpn file_name
