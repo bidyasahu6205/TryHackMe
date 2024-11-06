@@ -218,3 +218,143 @@ a. Which header is used to save cookies to your computer?
  sol. set-cookie
 
 TASK 7: Making Requests
+
+a. Make a GET request to /room
+sol. THM{YOU'RE_IN_ROOM}
+REQUEST
+GET /room HTTP/1.1
+Host: tryhackme.com
+User-Agent: Mozilla/5.0 Firefox/87.0
+Content-Length: 0
+
+RESPONSE
+HTTP/1.1 200 Ok
+Server: nginx/1.15.8
+Wed, 6 Nov 2024 1:8:29 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 252
+Last-Modified: Wed, 6 Nov 2024 1:8:29 GMT
+
+<html>
+<head>
+    <title>TryHackMe</title>
+</head>
+<body>
+    Welcome to the Room page THM{YOU'RE_IN_THE_ROOM}
+</body>
+</html>
+
+THM Browser
+Welcome to the Room page THM{YOU'RE_IN_THE_ROOM}
+
+b. Make a GET request to /blog and using the gear icon set the id parameter to 1 in the URL field
+sol. THM{YOU_FOUND_THE_BLOG}
+REQUEST
+GET /blog HTTP/1.1
+Host: tryhackme.com
+User-Agent: Mozilla/5.0 Firefox/87.0
+Content-Length: 0
+
+RESPONSE
+HTTP/1.1 200 Ok
+Server: nginx/1.15.8
+Wed, 6 Nov 2024 1:12:9 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 250
+Last-Modified: Wed, 6 Nov 2024 1:12:9 GMT
+
+<html>
+<head>
+    <title>TryHackMe</title>
+</head>
+<body>
+    Viewing Blog article 1 THM{YOU_FOUND_THE_BLOG}
+</body>
+</html>
+
+THM Browser
+Viewing Blog article 1 THM{YOU_FOUND_THE_BLOG}
+
+c. Make a DELETE request to /user/1
+sol. THM{USER_IS_DELETED}
+REQUEST
+DELETE /user/1 HTTP/1.1
+Host: tryhackme.com
+User-Agent: Mozilla/5.0 Firefox/87.0
+Content-Length: 0
+
+RESPONSE
+HTTP/1.1 200 Ok
+Server: nginx/1.15.8
+Wed, 6 Nov 2024 1:14:50 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 250
+Last-Modified: Wed, 6 Nov 2024 1:14:50 GMT
+
+<html>
+<head>
+    <title>TryHackMe</title>
+</head>
+<body>
+    The user has been deleted THM{USER_IS_DELETED}
+</body>
+</html>
+
+THM Browser
+The user has been deleted THM{USER_IS_DELETED}
+
+d. Make a PUT request to /user/2 with the username parameter set to admin
+sol. THM{USER_HAS_UPDATED}
+REQUEST
+PUT /user/2 HTTP/1.1
+Host: tryhackme.com
+User-Agent: Mozilla/5.0 Firefox/87.0
+Content-Length: 0
+
+RESPONSE
+HTTP/1.1 200 Ok
+Server: nginx/1.15.8
+Wed, 6 Nov 2024 1:17:17 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 251
+Last-Modified: Wed, 6 Nov 2024 1:17:17 GMT
+
+<html>
+<head>
+    <title>TryHackMe</title>
+</head>
+<body>
+    Username changed to admin THM{USER_HAS_UPDATED}
+</body>
+</html>
+
+THM Browser
+Username changed to admin THM{USER_HAS_UPDATED}
+
+e. POST the username of thm and a password of letmein to /login
+sol. THM{HTTP_REQUEST_MASTER}
+REQUEST
+POST /login HTTP/1.1
+Host: tryhackme.com
+User-Agent: Mozilla/5.0 Firefox/87.0
+Content-Length: 0
+
+RESPONSE
+HTTP/1.1 200 Ok
+Server: nginx/1.15.8
+Wed, 6 Nov 2024 1:19:40 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 256
+Last-Modified: Wed, 6 Nov 2024 1:19:40 GMT
+
+<html>
+<head>
+    <title>TryHackMe</title>
+</head>
+<body>
+    You logged in! Welcome Back THM{HTTP_REQUEST_MASTER}
+</body>
+</html>
+
+THM Browser
+You logged in! Welcome Back THM{HTTP_REQUEST_MASTER}
