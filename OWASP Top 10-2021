@@ -79,3 +79,77 @@ TASK 7:Cryptographic Failures (Supporting Material 2)
 - The challenge is guided, so if Crackstation fails to break a hash in today's box, you can assume that the hash has been specifically designed not to be crackable.
 
 TASK 8: Cryptographic Failures (Challenge)
+-Open the website
+- go to login page
+- check its source code
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<meta charset="utf-8">
+		<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+		<link type="text/css" rel="stylesheet" href="assets/css/style.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/loginStyle.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/orkney.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/icons.css">
+		<script src="assets/js/jquery-3.5.1.min.js"></script>
+	</head>
+	<body>
+		<header>
+			<a id="home" href="/">Sense and Sensitivity</a>
+			<a id="login" href="/login.php">Login</a>
+		</header>
+		<div class=background></div>
+		<!-- Must remember to do something better with the database than store it in /assets... -->
+		<main>
+			<div class="content">
+				<form method="POST">
+					<input type="text" name="user" placeholder="Username"><br>
+					<input type="password" name="pass" placeholder="Password"><br>
+					<input id="loginBtnFunc" type="submit" value="Login!">
+				</form>
+							</div>
+		</main>
+		<footer><span>&copy; Sense and Sensitivity, 2022</span></footer>
+	</body>
+</html>
+- as you can see that the path to js file for the login page is through /assets check if you can go to that page
+http://10.10.129.5:81/assets/ search you can see the contents of the files. you will be able to download the file.
+webaap.db
+a. What is the name of the mentioned directory?
+sol. /assets
+
+b. Navigate to the directory you found in question one. What file stands out as being likely to contain sensitive data?
+sol. webapp.db
+┌──(root㉿kali)-[/home/kali/Downloads]
+└─# ls              
+Bidyasahu.ovpn  breach-parse  burpsuite_pro_linux_v2024_3_1_4.sh  cacert.der  ctf  Nessus-10.7.2-ubuntu1404_amd64.deb  nessus.txt  ransom-letter.doc  starting_point_Bidya0sahu.ovpn  temtar.txt  webapp.db
+                                                                                                                                                                                                                                           
+┌──(root㉿kali)-[/home/kali/Downloads]
+└─# sqlite3 webapp.db
+SQLite version 3.44.2 2023-11-24 11:41:44
+Enter ".help" for usage hints.
+sqlite> .tables
+sessions  users   
+sqlite> PRAGMA TABLE_INFO(users);
+0|userID|TEXT|1||1
+1|username|TEXT|1||0
+2|password|TEXT|1||0
+3|admin|INT|1||0
+sqlite> select * from users;
+4413096d9c933359b898b6202288a650|admin|6eea9b7ef19179a06954edd0f6c05ceb|1
+23023b67a32488588db1e28579ced7ec|Bob|ad0234829205b9033196ba818f7a872b|1
+4e8423b514eef575394ff78caed3254d|Alice|268b38ca7b84f44fa0a6cdc86e6301e0|0
+sqlite> 
+
+Use the supporting material to access the sensitive data. What is the password hash of the admin user?
+sol.
+
+Crack the hash.
+What is the admin's plaintext password?
+sol. 
+
+Log in as the admin. What is the flag?
+sol. 
