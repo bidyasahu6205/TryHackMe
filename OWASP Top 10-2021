@@ -208,15 +208,7 @@ In simple terms, the above snippet does the following:
   Bash allows you to run commands within commands. This is useful for many reasons, but in our case, it will be used to inject a command within the cowsay server to get it executed.
 - To execute inline commands, you only need to enclose them in the following format $(your_command_here). If the console detects an inline command, it will execute it first and then use the result as the parameter for the outer command.
   Look at the following example, which runs whoami as an inline command inside an echo command:
-
-Inline commands
-
-So coming back to the cowsay server, here's what would happen if we send an inline command to the web application:
-
-Sending our payload
-
-Since the application accepts any input from us, we can inject an inline command which will get executed and used as a parameter for cowsay. This will make our cow say whatever the command returns! In case you are not that familiar with Linux, here are some other commands you may want to try:
-
+- Since the application accepts any input from us, we can inject an inline command which will get executed and used as a parameter for cowsay. This will make our cow say whatever the command returns! In case you are not that familiar with Linux, here are some other commands you may want to try:
 whoami
 id
 ifconfig/ip addr
@@ -224,10 +216,15 @@ uname -a
 ps -ef
 To complete the questions below, navigate to http://MACHINE_IP:82/ and exploit the cowsay server.
 
-Answer the questions below
-What strange text file is in the website's root directory?
-Answer format: ********.***
-Submit
+a. What strange text file is in the website's root directory?
+
+total 24 drwxr-xr-x 4 root root 4096 Feb 3 2023 .
+drwxr-xr-x 1 root root 4096 Feb 3 2023 ..
+drwxr-xr-x 2 root root 4096 Sep 9 2022 css 
+-rw-r--r-- 1 root root 78 Feb 3 2023 drpepper.txt 
+-rw-r--r-- 1 root root 2402 Sep 9 2022 index.php 
+drwxr-xr-x 2 root root 4096 Sep 9 2022 js  
+
 How many non-root/non-service/non-daemon users are there?
 
 Answer format: *
