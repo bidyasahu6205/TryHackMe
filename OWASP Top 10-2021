@@ -217,7 +217,8 @@ ps -ef
 To complete the questions below, navigate to http://MACHINE_IP:82/ and exploit the cowsay server.
 
 a. What strange text file is in the website's root directory?
-
+sol. drpepper.txt
+command: $(ls -la)
 total 24 drwxr-xr-x 4 root root 4096 Feb 3 2023 .
 drwxr-xr-x 1 root root 4096 Feb 3 2023 ..
 drwxr-xr-x 2 root root 4096 Sep 9 2022 css 
@@ -225,17 +226,53 @@ drwxr-xr-x 2 root root 4096 Sep 9 2022 css
 -rw-r--r-- 1 root root 2402 Sep 9 2022 index.php 
 drwxr-xr-x 2 root root 4096 Sep 9 2022 js  
 
-How many non-root/non-service/non-daemon users are there?
+b. How many non-root/non-service/non-daemon users are there?
+sol. 0
 
-Answer format: *
-Submit
-What user is this app running as?
+c. What user is this app running as?
+sol. apache
+command: $(whoami)
+ ________ 
+< apache >
+ -------- 
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
 
-Answer format: ******
-Submit
-What is the user's shell set as?
+d. What is the user's shell set as?
+sol. sbin/nologin
+command: $(cat /etc/passwd | grep usr)
+ _________________________________________ 
+/ news:x:9:13:news:/usr/lib/news:/sbin/no \
+| login                                   |
+| man:x:13:15:man:/usr/man:/sbin/nologin  |
+| games:x:35:35:games:/usr/games:/sbin/no |
+| login                                   |
+\ cyrus:x:85:12::/usr/cyrus:/sbin/nologin /
+ ----------------------------------------- 
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+                    
+e. What version of Alpine Linux is running?
+sol. 3.16.0
+command: $(cat /etc/os-release)
+ _________________________________________ 
+/ NAME="Alpine Linux" ID=alpine           \
+| VERSION_ID=3.16.0 PRETTY_NAME="Alpine   |
+| Linux v3.16"                            |
+| HOME_URL="https://alpinelinux.org/"     |
+| BUG_REPORT_URL="https://gitlab.alpineli |
+\ nux.org/alpine/aports/-/issues"         /
+ ----------------------------------------- 
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
 
-Answer format: /****/*******
-Submit
-What version of Alpine Linux is running?
-
+TASK 11: Insecure Design
